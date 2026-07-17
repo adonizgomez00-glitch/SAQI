@@ -4,7 +4,8 @@
 
 [![Versión](https://img.shields.io/badge/versión-1.0-blue)](https://github.com/adonis/SAQI)
 [![Estado](https://img.shields.io/badge/estado-experimental-orange)](https://github.com/adonis/SAQI)
-[![Licencia](https://img.shields.io/badge/licencia-MIT-green)](LICENSE)
+[![Licencia Docs](https://img.shields.io/badge/docs-CC--BY--4.0-blue)](LICENSE-DOCS)
+[![Licencia Código](https://img.shields.io/badge/código-MIT-green)](LICENSE-CODE)
 
 ---
 
@@ -242,7 +243,15 @@ git push origin feature/nueva-skill-seguridad
 
 ## 📄 Licencia
 
-MIT License — Ver [LICENSE](LICENSE) para detalles.
+Este repositorio tiene licenciamiento dual:
+
+| Componente | Licencia | Archivo |
+|------------|----------|---------|
+| **Documentación / Metodología / Plantillas de texto** (`.md`, guías, papers) | **CC-BY-4.0** | [LICENSE-DOCS](LICENSE-DOCS) |
+| **Código / Scripts / Plantillas ejecutables** (`.js`, `.sh`, `.yaml`, collectors) | **MIT** | [LICENSE-CODE](LICENSE-CODE) |
+| **Caso de estudio Open-RootERP** (referencia) | **GPL-2.0-or-later** | Ver [erp-ligero-offline](https://github.com/adonis/apps-locales/erp-ligero-offline) |
+
+> **Nota**: SAQI es una metodología documentada. El código de ejemplo y scripts de recolección son MIT. La documentación es CC-BY-4.0 (atribución requerida). Open-RootERP (caso de estudio) mantiene su licencia GPL-2.0-or-later original.
 
 ---
 
