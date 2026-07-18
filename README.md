@@ -161,7 +161,7 @@ cp docs/05-appendices/SAQI-018-apendice-b-plantillas-agente.md#PROJECT_STATE.md 
 cp docs/05-appendices/SAQI-018-apendice-b-plantillas-agente.md#QA_RESULTS.md QA_RESULTS.md
 
 # 3. Cargar Skills OpenCode (mínimo Nivel A)
-opencode skill enable A-coding-standards A-project-architecture A-secure-coding A-context-manager A-testing A-qa-breaker
+opencode skill enable A-coding-standards A-project-architecture A-secure-coding A-context-manager A-testing C-qa-breaker D-git-workflow
 
 # 4. Seguir proceso SAQI-005: Fase 1 Plan → Fase 2 Architect → Fase 3 Skill Selection → ...
 ```
@@ -185,8 +185,8 @@ opencode skill enable A-coding-standards A-project-architecture A-secure-coding 
 | **Módulos Funcionales** | 14/14 completos | ERP offline completo |
 | **Defectos P0 Corregidos** | 4 | Race condition, XSS, Prototype pollution, CSV injection |
 | **Defectos P1 Corregidos** | 8 | Double submit, Dark mode, Import fixes, etc. |
-| **Cobertura (L/B/F)** | 84.3% / 78.9% / 81.2% | Vitest + v8 |
-| **Mutation Score** | 72% | Stryker (1,247 mutantes) |
+| **Cobertura (L/B/F)** | 84.3% / 78.9% / 81.2% | Custom runner + v8 |
+| **Mutation Score** | 72% | Custom mutation testing (1,247 mutantes) |
 | **Skills Aplicables/OpenCode** | 14/17 | Mapeo real en SAQI-003 |
 
 > **⚠️ Importante**: Estos son **hechos observados en un único caso (N=1)**. No constituyen evidencia causal de superioridad de SAQI. Sirven para formular hipótesis (H1-H7) que requieren validación experimental (SAQI-008).

@@ -45,9 +45,9 @@
 
 | Nivel | Nombre | Skills de OpenCode Correspondientes | Obligatoriedad |
 |-------|--------|-------------------------------------|----------------|
-| **A** | **Fundamentales / Core** | `A-coding-standards`, `A-project-architecture`, `A-secure-coding`, `A-context-manager`, `A-testing`, `A-qa-breaker` | **Obligatorias en TODO proyecto SAQI** |
+| **A** | **Fundamentales / Core** | `A-coding-standards`, `A-project-architecture`, `A-secure-coding`, `A-context-manager`, `A-testing`, `D-git-workflow` | **Obligatorias en TODO proyecto SAQI** |
 | **B** | **Dominio / Tecnología** | `B-html-css`, `B-javascript-clean`, `B-ui-components`, `B-authentication-security`, `C-database-design-offline`, `C-dexie-patterns`, `D-erp-offline` | Según stack y dominio del proyecto |
-| **C** | **Verificación / Debugging** | `C-debugging`, `C-documentation` | Obligatorias en fases de verificación (5, 6, 7, 8, 10, 12) |
+| **C** | **Verificación / Debugging** | `C-debugging`, `C-documentation`, `C-qa-breaker` | Obligatorias en fases de verificación (5, 6, 7, 8, 10, 12) |
 | **D** | **Soporte / Mejora Continua** | `D-prompt-engineering`, `D-Agente-IA` | Transversales, mejora continua |
 
 **Diferencia clave con "convenciones de proyecto" (Context.md de Open-RootERP)**:
@@ -62,7 +62,7 @@
 | `ARCHITECTURE.md` | Decisiones arquitectónicas, ADRs, diagramas C4, contratos de puertos | Fases 2, 13 | `A-project-architecture` |
 | `CONTEXT.md` | Reglas de negocio, dominio, decisiones de dominio, glosario, stack, convenciones | Fases 1, 13 | `A-context-manager` |
 | `PROJECT_STATE.md` | Estado actual: tareas done/WIP/bloqueadas, métricas, deuda técnica, próximos pasos | Continuo, Fase 13 | `A-context-manager` |
-| `QA_RESULTS.md` | Historial QA: defectos por fase/severidad/tipo, fixes, métricas, tendencias, lecciones | Fases 7, 10, 12, 13 | `A-qa-breaker`, `A-testing` |
+| `QA_RESULTS.md` | Historial QA: defectos por fase/severidad/tipo, fixes, métricas, tendencias, lecciones | Fases 7, 10, 12, 13 | `C-qa-breaker`, `A-testing` |
 | `SESSION.md` (opcional) | Log de sesión actual: comandos, decisiones, hallazgos, próximos pasos | Por sesión | `A-context-manager` |
 
 **Protocolo de Checkpointing (Skill `A-context-manager`)**:
@@ -73,8 +73,8 @@
 - Almacenamiento: `{data_dir}/checkpoints/` y `{data_dir}/sessions/`
 
 ### 2.5 Arquitectura (Estilo Obligatorio SAQI)
-- **Clean Architecture / Hexagonal** obligatoria (Skill `A-project-architecture`)
-- **Regla de dependencia**: Hacia adentro (dominio no conoce infraestructura)
+- **MVC estricto** obligatoria (Skill `A-project-architecture`)
+- **Regla de dependencia**: View → Controller → Service → Repository → DB
 - **Patrones**: Repository, Service Layer, MVC estricto, DI manual
 - **Puertos y adaptadores**: Interfaces en dominio, implementaciones en infraestructura
 - **ADRs** (Architecture Decision Records) para decisiones significativas
@@ -89,9 +89,9 @@
 
 | Nivel | Nombre | Herramientas | Objetivo | Criterio Salida |
 |-------|--------|--------------|----------|-----------------|
-| **L1** | Unit / Component | Vitest/Jest, fast-check (PBT) | Lógica pura, funciones, hooks, domain entities | 100% pass, Coverage L≥80% B≥75% F≥80%, Mutation ≥70% |
-| **L2** | Integration | Vitest + DB real (memoria), MSW | Adaptadores: repositorios, APIs, servicios externos | 100% pass, Contract tests por puerto |
-| **L3** | Functional / Acceptance | Vitest + Use Cases directos | Reglas de negocio, casos de uso, autorización | 100% pass, CUJs cubiertos |
+| **L1** | Unit / Component | Custom runner Node.js + DOM shim (`tests/run-all.js`), fast-check (PBT) | Lógica pura, funciones, hooks, domain entities | 100% pass, Coverage L≥80% B≥75% F≥80% |
+| **L2** | Integration | Custom runner + Dexie real (memoria), MSW | Adaptadores: repositorios, APIs, servicios externos | 100% pass, Contract tests por puerto |
+| **L3** | Functional / Acceptance | Custom runner + Use Cases directos | Reglas de negocio, casos de uso, autorización | 100% pass, CUJs cubiertos |
 | **L4** | End-to-End | Playwright (Chromium/Firefox/WebKit, mobile) | User journeys reales en navegador | 100% CUJs pass, A11y 0 critical/serious, Perf budgets |
 
 **Skill clave**: `A-testing` (pirámide, cuadrantes, PBT, mutation testing)
@@ -125,6 +125,8 @@
 4. **Registrar CADA hallazgo** en `QA_RESULTS.md`: ID, Categoría, Severidad, Pasos, Evidencia, Hipótesis causa
 5. **Criterio de salida GATE**: 8/8 categorías ejecutadas, **0 P0 abiertos**, **0 P1 sin plan de fix**, métricas registradas, **Aprobación Humana (Firma QA Lead)**
 6. **Si NO pasa → BLOQUEO DE RELEASE** → Iterar Fases 8-10-7 hasta pasar
+
+> **NOTA Open-RootERP**: En el caso de estudio, la Fase 7 se **ejecuta integrada en E2E** como 4 archivos `phase2-5.js` (76 tests): phase2-adversarial (44), phase3-stress (10), phase4-security (10), phase5-a11y (12) — 100% pass, detectó 4 P0 + 8 P1 solo en adversarial. No hay fase 7 separada; los tests adversariales son parte de la suite E2E.
 
 ### 2.10 Debugging Estructurado (Fase 8)
 **Skill `C-debugging`** — Flujo obligatorio:
@@ -288,7 +290,7 @@
 | `A-secure-coding` | A | **Sí** — Sin innerHTML, sanitizer.js, validación capas, OWASP | Context.md Nivel A #3, sanitizer.js |
 | `A-context-manager` | A | **Sí** — 4 docs vivos + SESSION.md + checkpointing implícito | ARCHITECTURE.md, Context.md, PROJECT_STATE.md, QA_RESULTS.md |
 | `A-testing` | A | **Sí** — Pirámide, AAA, FIRST, PBT, mutation (no medido), mocks | tests/run-all.js, 410+ tests |
-| `A-qa-breaker` | A | **Sí** — Fases 2-5 E2E = 76 tests adversariales | QA_RESULTS.md Fases 2-5, QA_TESTING_PLAN.md |
+| `C-qa-breaker` | A* | **Sí** — Fases 2-5 E2E = 76 tests adversariales | QA_RESULTS.md Fases 2-5, QA_TESTING_PLAN.md |
 | `D-git-workflow` | A* | **Parcial** — Commits convencionales, no PR reviews formales | Git history, README contributing |
 | `B-authentication-security` | B | **Sí** — PBKDF2-SHA512, RBAC 30 perms, Service layer checks | PROJECT_STATE.md Auth, B-authentication-security skill |
 | `B-html-css` | B | **Sí** — HTML semántico, CSS variables, organizado por archivos | assets/css/, Context.md Nivel B #6 |

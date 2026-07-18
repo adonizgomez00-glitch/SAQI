@@ -100,7 +100,7 @@ cp ../documentation/templates/QA_RESULTS.md.template QA_RESULTS.md
 cp ../documentation/templates/SESSION.md.template SESSION.md
 
 # 6. Cargar Skills OpenCode (mínimo Nivel A)
-opencode skill enable A-coding-standards A-project-architecture A-secure-coding A-context-manager A-testing A-qa-breaker
+opencode skill enable A-coding-standards A-project-architecture A-secure-coding A-context-manager A-testing C-qa-breaker D-git-workflow
 opencode skill enable B-html-css B-javascript-clean B-ui-components B-authentication-security C-database-design-offline C-dexie-patterns D-erp-offline
 opencode skill enable C-debugging C-documentation D-prompt-engineering
 ```
@@ -151,8 +151,8 @@ npm test                    # 45 suites, 410+ tests, 0 fallos
 npm run test:e2e           # 38 E2E + 76 adversarial, 0 fallos
 
 # Verificar métricas objetivo
-# - Coverage: vitest --coverage
-# - Mutation: npx stryker run
+# - Coverage: node tests/run-all.js --coverage
+# - Mutation: custom mutation testing
 # - Comparar con métricas SAQI-003 (Open-RootERP original)
 ```
 
@@ -287,7 +287,7 @@ saqi-replication-results-YYYYMMDD/
 |----------|----------------|----------|
 | `npm test` falla "Cannot find module dexie" | Dexie no copiado a assets/lib/ | `cp node_modules/dexie/dist/dexie.mjs assets/lib/dexie.js` |
 | Playwright tests timeout | Puerto 3099 ocupado / servidor no inicia | Verificar `python3 -m http.server 3000` en background; matar procesos previos |
-| Mutation testing (Stryker) muy lento | 1000+ mutantes | Configurar `stryker.conf.js`: `mutate: ['src/**/*.js']`, `testRunner: 'vitest'`, `concurrency: 4` |
+| Mutation testing custom lento | 1000+ mutantes | Configurar mutation testing custom: `mutate: ['src/**/*.js']`, `testRunner: 'custom'`, `concurrency: 4` |
 | Coverage < 80% | Tests faltantes en utils, components | Añadir tests para sanitizer, validators, helpers, ThemeManager, components |
 | Phase 7 adversarial tests flaky | Timing, async, race conditions | Aumentar timeouts, usar `waitFor` Playwright, aislar tests |
 | OpenCode skill no carga | Path incorrecto / frontmatter inválido | Verificar `~/.config/opencode/skills/generic/<skill>/SKILL.md` existe y YAML válido |

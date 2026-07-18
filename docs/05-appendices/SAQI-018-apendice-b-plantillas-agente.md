@@ -24,7 +24,7 @@ project:
     ui: "react"           # react | vanilla | vue | svelte | none
     db: "postgresql"      # postgresql | mysql | sqlite | indexeddb | none
     orm: "prisma"         # prisma | drizzle | dexie | typeorm | none
-    test_unit: "vitest"
+    test_unit: "vitest"           # vitest | custom (ej. node tests/run-all.js)
     test_e2e: "playwright"
     test_adversarial: ["playwright", "k6", "zap", "axe-core"]
     build: "vite"
@@ -141,11 +141,12 @@ metrics:
 | Skill | Versión | Justificación | Estado |
 |-------|---------|---------------|--------|
 | A-coding-standards | v2.1.0 | Estándares base todo proyecto | ✅ Cargada |
-| A-project-architecture | v1.0.0 | Clean/Hexagonal + ADRs | ✅ Cargada |
+| A-project-architecture | v1.0.0 | MVC estricto + ADRs | ✅ Cargada |
 | A-secure-coding | v1.2.0 | OWASP + CERT + NIST SSDF | ✅ Cargada |
 | A-context-manager | v1.1.0 | 4 docs vivos + checkpointing | ✅ Cargada |
 | A-testing | v1.0.0 | Pirámide + cuadrantes + PBT + mutation | ✅ Cargada |
-| A-qa-breaker | v1.0.0 | QA adversarial 8 categorías ATK-* | ✅ Cargada |
+| C-qa-breaker | v1.0.0 | QA adversarial 8 categorías ATK-* | ✅ Cargada |
+| D-git-workflow | v2.0.0 | Conventional Commits, Trunk-Based, PR gates, SemVer | ✅ Cargada |
 
 ---
 
@@ -196,7 +197,8 @@ skills_lock:
   A-secure-coding: "1.2.0"
   A-context-manager: "1.1.0"
   A-testing: "1.0.0"
-  A-qa-breaker: "1.0.0"
+  C-qa-breaker: "1.0.0"
+  D-git-workflow: "2.0.0"
   B-javascript-clean: "1.0.0"
   B-ui-components: "1.0.0"
   B-authentication-security: "1.0.0"
@@ -462,7 +464,7 @@ Prohibido saltarse capas.
 ## Convenciones Clave (Niveles A-D)
 ### Nivel A — Obligatorio Siempre
 1. A-coding-standards — SOLID, DRY, KISS, 300 líneas/archivo, 40 líneas/función
-2. A-project-architecture — Clean/Hexagonal, ADRs, DI
+2. A-project-architecture — MVC estricto, ADRs, DI manual
 3. A-secure-coding — Sin innerHTML dinámico, sanitizar, validar capas
 4. A-testing — AAA, FIRST, casos borde, mocks
 

@@ -230,7 +230,7 @@
 83. `A-secure-coding` — Programación segura basada en OWASP, ISO 27001/27002, NIST SSDF, CERT.
 84. `A-context-manager` — Gestión proactiva ventana contexto LLM: monitoreo, checkpointing 80%, relectura, reanudación.
 85. `A-testing` — Código testeable, pruebas automáticas, AAA, FIRST.
-86. `A-qa-breaker` — QA adversarial exploratorio desde frontend: asume bugs, intenta romper.
+86. `C-qa-breaker` — QA adversarial exploratorio desde frontend: asume bugs, intenta romper.
 87. `B-html-css` — HTML semántico, CSS organizado, variables, responsive mobile-first.
 88. `B-javascript-clean` — JS moderno ES2022+, ES Modules, const/let, async/await, sin var.
 89. `B-ui-components` — Componentes reutilizables: Modal, Toast, Table, Form, etc.

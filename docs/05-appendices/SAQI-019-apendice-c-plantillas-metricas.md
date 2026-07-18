@@ -201,7 +201,7 @@ class SAQIMetricsCollector {
   async collectPhase5() {
     console.log('📊 Recolectando métricas Fase 5 (Unit/Int)...');
     
-    // Ejecutar vitest con coverage y json output
+    // Ejecutar tests con coverage (adaptar comando al proyecto: vitest, jest, custom runner)
     const result = execSync('npm test -- --reporter=json --coverage', { 
       encoding: 'utf8',
       maxBuffer: 10 * 1024 * 1024 
@@ -215,9 +215,10 @@ class SAQIMetricsCollector {
     this.add('test_pass_rate', (data.numPassedTests / data.numTotalTests) * 100);
     this.add('test_count', data.numTotalTests);
     
-    // Mutation testing (Stryker)
+    // Mutation testing (custom o Stryker)
     try {
-      const mutResult = execSync('npx stryker run --reporter json', { encoding: 'utf8' });
+      // Adaptar comando al proyecto: npx stryker run --reporter json, o mutation testing custom
+      const mutResult = execSync('npm run test:mutation -- --reporter json', { encoding: 'utf8' });
       const mutData = JSON.parse(mutResult);
       this.add('mutation_score', mutData.mutationScore);
     } catch (e) {

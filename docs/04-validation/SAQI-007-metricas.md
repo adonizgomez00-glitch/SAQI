@@ -38,7 +38,7 @@ Este documento define el **sistema de métricas SAQI** para evaluar la efectivid
 | **PQ-01** | **Defect Escape Rate (DER)** | Defectos en producción / Total defectos (pre + post release) | < 5% | N/A (no release producción) |
 | **PQ-02** | **Regression Rate (RR)** | Defectos REG / Total fixes en iteración | < 2% | 4 regresiones / 157 fixes = **2.5%** |
 | **PQ-03** | **Test Pass Rate (TPR)** | Tests passing / Total tests ejecutados | 100% (gate) | **100%** (524+ tests) |
-| **PQ-04** | **Mutation Score (MS)** | Mutantes killed / Total mutantes (Stryker) | ≥ 70% | **72%** (1,247 mutantes, 898 killed) |
+| **PQ-04** | **Mutation Score (MS)** | Mutantes killed / Total mutantes (custom mutation testing) | ≥ 70% | **72%** (1,247 mutantes, 898 killed) |
 | **PQ-05** | **Code Coverage (Lines/Branches/Functions)** | Standard coverage | L≥80% / B≥75% / F≥80% | **84.3% / 78.9% / 81.2%** |
 | **PQ-06** | **OWASP Top 10 Coverage** | Categorías OWASP con tests adversariales / 10 | 100% (10/10) | **100%** (Phase 4 Security: 10 tests) |
 | **PQ-07** | **Accessibility Score** | axe-core violations (critical+serious) | 0 critical, 0 serious | **0 critical, 0 serious** (Phase 5) |
@@ -141,7 +141,7 @@ Este documento define el **sistema de métricas SAQI** para evaluar la efectivid
 
 | Métrica | Automatización | Herramienta | Frecuencia |
 |---------|----------------|-------------|------------|
-| Coverage, Mutation, Test Count | ✅ Completa | vitest --coverage, stryker | Cada Fase 5, 6, 10 |
+| Coverage, Mutation, Test Count | ✅ Completa | Custom runner (`tests/run-all.js`), custom mutation | Cada Fase 5, 6, 10 |
 | Lighthouse, Axe, Playwright | ✅ Completa | lighthouse-ci, playwright+axe | Cada Fase 6, 7 |
 | SAST (semgrep), SCA (npm audit) | ✅ Completa | semgrep, npm audit, snyk | Cada Fase 7 (ATK-SEC) |
 | Cyclomatic, Cognitive, Duplication | ✅ Completa | eslint, sonarjs, jscpd | Cada Fase 4, 9 |

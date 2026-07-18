@@ -48,7 +48,7 @@
 
 | Nivel | Nombre | Skills Ejemplo | Obligatoriedad |
 |-------|--------|----------------|----------------|
-| **A** | **Fundamentales / Core** | `A-coding-standards`, `A-project-architecture`, `A-secure-coding`, `A-context-manager`, `A-testing`, `A-qa-breaker` | **Obligatorias en TODO proyecto SAQI** |
+| **A** | **Fundamentales / Core** | `A-coding-standards`, `A-project-architecture`, `A-secure-coding`, `A-context-manager`, `A-testing`, `C-qa-breaker`, `D-git-workflow` | **Obligatorias en TODO proyecto SAQI** |
 | **B** | **Dominio / Tecnología** | `B-html-css`, `B-javascript-clean`, `B-ui-components`, `B-authentication-security`, `C-database-design-offline`, `C-dexie-patterns`, `D-erp-offline` | Según stack y dominio |
 | **C** | **Verificación / Debugging** | `C-debugging`, `C-documentation` | Obligatorias en fases verificación (5,6,7,8,10,12) |
 | **D** | **Soporte / Mejora Continua** | `D-prompt-engineering`, `D-Agente-IA` | Transversales, opcionales pero recomendadas |

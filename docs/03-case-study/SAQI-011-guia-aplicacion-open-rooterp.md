@@ -37,7 +37,7 @@ touch ARCHITECTURE.md CONTEXT.md PROJECT_STATE.md QA_RESULTS.md SESSION.md
 opencode skill list
 
 # Skills relevantes para ERP offline vanilla JS
-# Nivel A (obligatorias): A-coding-standards, A-project-architecture, A-secure-coding, A-context-manager, A-testing, A-qa-breaker
+# Nivel A (obligatorias): A-coding-standards, A-project-architecture, A-secure-coding, A-context-manager, A-testing, C-qa-breaker, D-git-workflow
 # Nivel B (dominio): B-html-css, B-javascript-clean, B-ui-components, B-authentication-security, C-database-design-offline, C-dexie-patterns, D-erp-offline
 # Nivel C: C-debugging, C-documentation
 # Nivel D: D-prompt-engineering

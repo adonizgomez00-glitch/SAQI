@@ -394,9 +394,7 @@ usuario: "checkpoint" / "guarda progreso"
 | `docs/QA_RESULTS.md` | ✅ | 198 | 2026-07-16 | Completo: 5 fases, 159 tests, hallazgos, tendencias |
 | `SESSION.md` | ✅ | ~50 | 2026-07-16 | Log sesión actual |
 
-**Checkpointing automático**: **NO implementado** en Open-RootERP (manual via docs update). Protocol definido en `A-context-manager` skill pero no ejecutado por agente autónomo.
-
-**Gap identificado**: Falta tooling para monitoreo tokens + checkpointing automático + re-hidratación. Requiere SAQI-014 tooling.
+**Checkpointing automático**: **NO implementado durante el desarrollo de Open-RootERP**. El checkpointing se realizó de **forma manual por el usuario** actualizando los 4 documentos vivos al final de cada sesión/iteración. El protocolo de checkpointing automático (monitoreo 70%/80%, resumen preventivo, checkpoint obligatorio, re-hidratación) se definió en la skill `A-context-manager` **después de finalizar el proyecto** como lección aprendida. Requiere tooling SAQI-014 (`saqi-context` CLI) para ser ejecutado por agente autónomo.
 
 ---
 

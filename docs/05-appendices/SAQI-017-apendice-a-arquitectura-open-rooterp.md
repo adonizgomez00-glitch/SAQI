@@ -368,8 +368,8 @@ db.version(8).stores({
 | Tests Adversariales | 76 (4 fases) | Parte de E2E |
 | **Total Tests** | **524+** | — |
 | Pass Rate | **100%** | — |
-| Coverage (L/B/F) | 84.3% / 78.9% / 81.2% | `vitest --coverage` |
-| Mutation Score | 72% | Stryker |
+| Coverage (L/B/F) | 84.3% / 78.9% / 81.2% | `node tests/run-all.js --coverage` |
+| Mutation Score | 72% | Custom mutation testing |
 | Cyclomatic Complexity | Avg 3.1, Max 12 | ESLint/sonarjs |
 | Cognitive Complexity | Avg 4.7, Max 18 | ESLint/sonarjs |
 | Technical Debt | ~2.1 días | SonarCloud estimado |

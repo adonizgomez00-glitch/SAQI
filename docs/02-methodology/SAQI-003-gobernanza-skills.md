@@ -143,7 +143,7 @@ Limitaciones conocidas, decisiones de diseño, debt técnico aceptado.
 | Skill ID | Nombre | Dominio | Referencia Normativa Principal |
 |----------|--------|---------|-------------------------------|
 | `A-coding-standards` | Estándares de Código | Clean Code, TypeScript, React | Martin (Clean Code), TypeScript Handbook |
-| `A-project-architecture` | Arquitectura de Proyecto | Clean/Hexagonal, ADRs, C4 | Martin (Clean Architecture), Cockburn (Hexagonal) |
+| `A-project-architecture` | Arquitectura de Proyecto | MVC estricto, capas separadas, DI manual | Martin (Clean Code), SAQI-004 |
 | `A-secure-coding` | Programación Segura | OWASP, CERT, NIST SSDF | OWASP Top 10, ASVS, CERT, NIST 800-218 |
 | `A-context-manager` | Gestión de Contexto | Context Engineering, Checkpointing | Liu et al. (RAG), Voyager (Skill Library) |
 | `A-testing` | Testing Automatizado | Pirámide, Cuadrantes, Mutation, PBT | Cohn (Pyramid), Crispin (Quadrants), Jia & Harman (Mutation) |
@@ -156,8 +156,8 @@ Limitaciones conocidas, decisiones de diseño, debt técnico aceptado.
 |----------|--------|---------|---------------|
 | `B-authentication-security` | Autenticación Segura | Auth, RBAC, JWT, Offline | Apps con auth |
 | `B-database-design-sql` | Diseño BD SQL | PostgreSQL, MySQL, Migraciones | Backend con SQL |
-| `B-database-design-offline` | Diseño BD Offline | IndexedDB, Dexie, Sync, CRDT | Offline-first apps |
-| `B-dexie-patterns` | Patrones Dexie.js | IndexedDB wrapper patterns | Apps Dexie/IndexedDB |
+| `C-database-design-offline` | Diseño BD Offline | IndexedDB, Dexie, Sync, CRDT | Offline-first apps |
+| `C-dexie-patterns` | Patrones Dexie.js | IndexedDB wrapper patterns | Apps Dexie/IndexedDB |
 | `B-erp-offline` | ERP Offline Patterns | Módulos ERP, Sync, Audit | ERP offline |
 | `B-html-css` | HTML Semántico + CSS | Semantic HTML, Tailwind, Design Systems | Frontend web |
 | `B-javascript-clean` | JavaScript Limpio | ES2024+, Patterns, Functional | JS/TS projects |

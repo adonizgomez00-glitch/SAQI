@@ -65,7 +65,7 @@ El proceso SAQI consta de **14 fases secuenciales** con criterios de entrada/sal
 |----------|------------|
 | **Objetivo** | Seleccionar, versionar y configurar las Skills aplicables a la iteración |
 | **Entrada** | `ITERATION_PLAN.md`, `ARCHITECTURE.md`, Stack tecnológico, Catálogo Skills disponible |
-| **Actividades** | 1. Mapear requerimientos iteración → Skills necesarias (Matriz Requerimiento × Skill)<br>2. **Nivel A**: Verificar TODAS obligatorias incluidas (`A-coding-standards`, `A-project-architecture`, `A-secure-coding`, `A-context-manager`, `A-testing`, `A-qa-breaker`)<br>3. **Nivel B**: Seleccionar según dominio/stack (ej: `C-database-design-offline`, `C-dexie-patterns`, `B-authentication-security`, `D-erp-offline`, `B-ui-components`, `B-html-css`, `B-javascript-clean`)<br>4. **Nivel C**: Incluir `C-debugging`, `C-documentation`<br>5. **Nivel D**: Incluir `D-prompt-engineering`, `D-Agente-IA` si mejora continua<br>6. Registrar **versiones exactas** de cada Skill (SemVer) en `ITERATION_PLAN.md`<br>7. Verificar compatibilidad Skills (no conflictos reglas)<br>8. Configurar agente con Skills seleccionadas (cargar en contexto) |
+| **Actividades** | 1. Mapear requerimientos iteración → Skills necesarias (Matriz Requerimiento × Skill)<br>2. **Nivel A**: Verificar TODAS obligatorias incluidas (`A-coding-standards`, `A-project-architecture`, `A-secure-coding`, `A-context-manager`, `A-testing`, `D-git-workflow`)<br>3. **Nivel B**: Seleccionar según dominio/stack (ej: `C-database-design-offline`, `C-dexie-patterns`, `B-authentication-security`, `D-erp-offline`, `B-ui-components`, `B-html-css`, `B-javascript-clean`)<br>4. **Nivel C**: Incluir `C-debugging`, `C-documentation`, `C-qa-breaker`<br>5. **Nivel D**: Incluir `D-prompt-engineering`, `D-Agente-IA` si mejora continua<br>6. Registrar **versiones exactas** de cada Skill (SemVer) en `ITERATION_PLAN.md`<br>7. Verificar compatibilidad Skills (no conflictos reglas)<br>8. Configurar agente con Skills seleccionadas (cargar en contexto) |
 | **Responsable Humano** | Tech Lead / Orquestador (selección final, aprobación versiones) |
 | **Responsable Agente** | Cargar Skills, validar sintaxis, reportar conflictos, generar resumen Skills activas |
 | **Artefactos Generados** | `SKILL_SELECTION.md` (lista skills + versiones + justificación), Configuración agente actualizada |
@@ -81,7 +81,7 @@ El proceso SAQI consta de **14 fases secuenciales** con criterios de entrada/sal
 |----------|------------|
 | **Objetivo** | Implementar código de la iteración guiado por Skills, Arquitectura, Contexto |
 | **Entrada** | `ITERATION_PLAN.md`, `ARCHITECTURE.md`, `CONTEXT.md`, `SKILL_SELECTION.md`, Skills cargadas, Código base actual |
-| **Actividades** | 1. **Por cada historia/AC:**<br>   a. Agente lee AC, arquitectura, Skills relevantes<br>   b. Agente genera implementación + tests unitarios (L1) simultáneamente (TDD asistido)<br>   c. Humano revisa código crítico (security, arquitectura, domain logic)<br>   d. Ejecutar tests unitarios (L1) → corregir hasta 100% pass<br>2. Aplicar **patrones de Skills** obligatorios (Repository, Result, Builders, etc.)<br>3. **Linting + Typecheck** obligatorio tras cada cambio (Skill `A-coding-standards`)<br>4. Commits atómicos con mensajes convencionales (Skill `D-git-workflow` si existe)<br>5. Actualizar `PROJECT_STATE.md` progresivamente (tareas completadas, bloqueos) |
+| **Actividades** | 1. **Por cada historia/AC:**<br>   a. Agente lee AC, arquitectura, Skills relevantes<br>   b. Agente genera implementación + tests unitarios (L1) simultáneamente (TDD asistido)<br>   c. Humano revisa código crítico (security, arquitectura, domain logic)<br>   d. Ejecutar tests unitarios (L1) → corregir hasta 100% pass<br>2. Aplicar **patrones de Skills** obligatorios (Repository, Result, Builders, etc.)<br>3. **Linting** obligatorio tras cada cambio (Skill `A-coding-standards`)<br>4. Commits atómicos con mensajes convencionales (Skill `D-git-workflow` si existe)<br>5. Actualizar `PROJECT_STATE.md` progresivamente (tareas completadas, bloqueos) |
 | **Responsable Humano** | Revisión código crítico (security, arquitectura, domain); Decisiones diseño no triviales; Aprobación merges |
 | **Responsable Agente** | Generación código + tests; Refactoring guiado por Skills; Linting/Typecheck; Commits |
 | **Artefactos Generados** | Código fuente (`src/`), Tests unitarios (`tests/unit/`, `tests/integration/`), Commits, `PROJECT_STATE.md` actualizado |
@@ -97,13 +97,13 @@ El proceso SAQI consta de **14 fases secuenciales** con criterios de entrada/sal
 |----------|------------|
 | **Objetivo** | Verificar exhaustivamente unidades y adaptadores con criterios cuantitativos |
 | **Entrada** | Código de Fase 4, Skills `A-testing`, `C-dexie-patterns`, `C-database-design-*` |
-| **Actividades** | 1. Ejecutar suite completa Unit + Integration (`vitest run --coverage`)<br>2. Verificar **umbrales**: Coverage L≥80%, B≥75%, F≥80%; Mutation ≥70%<br>3. Validar **Contract Tests** para cada puerto (fake + real implementations pasan mismos tests)<br>4. Verificar **Property-Based Tests** para invariantes de dominio<br>5. Corregir fallos → volver a Fase 4 (ciclo interno) hasta 100% pass<br>6. Generar reporte cobertura + mutation (`coverage/lcov-report`, `stryker-report`) |
+| **Actividades** | 1. Ejecutar suite completa Unit + Integration (`node tests/run-all.js --coverage`)<br>2. Verificar **umbrales**: Coverage L≥80%, B≥75%, F≥80%<br>3. Validar **Contract Tests** para cada puerto (fake + real implementations pasan mismos tests)<br>4. Verificar **Property-Based Tests** para invariantes de dominio<br>5. Corregir fallos → volver a Fase 4 (ciclo interno) hasta 100% pass<br>6. Generar reporte cobertura (`coverage/lcov-report`) |
 | **Responsable Humano** | Analizar gaps cobertura; Decidir si cobertura < umbral es aceptable (justificado en ADR) |
-| **Responsable Agente** | Ejecutar suites; Reportar métricas; Sugerir tests faltantes; Ejecutar mutation testing |
-| **Artefactos Generados** | Reportes cobertura/mutation; Tests añadidos/modificados; `QA_RESULTS.md` actualizado (sección L1-L2) |
-| **Criterio Salida** | 100% tests pass; Umbrales cobertura/mutation cumplidos; Reportes archivados |
+| **Responsable Agente** | Ejecutar suites; Reportar métricas; Sugerir tests faltantes |
+| **Artefactos Generados** | Reportes cobertura; Tests añadidos/modificados; `QA_RESULTS.md` actualizado (sección L1-L2) |
+| **Criterio Salida** | 100% tests pass; Umbrales cobertura cumplidos; Reportes archivados |
 
-**Evidencia Open-RootERP**: `npm test` → 45 suites, 410+ tests, 0 fallos; runner custom con DOM shim; Dexie memory adapter para unit; integration tests con Dexie real en memoria
+**Evidencia Open-RootERP**: `node tests/run-all.js` → 45 suites, 410+ tests, 0 fallos; runner custom con DOM shim; Dexie memory adapter para unit; integration tests con Dexie real en memoria
 
 ---
 
