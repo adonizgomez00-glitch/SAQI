@@ -1,8 +1,8 @@
 # SAQI-007: Marco de Atributos de Calidad y Métricas
 
-**Versión:** 1.1
-**Fecha:** 2026-07-17
-**Estado:** Corregido con métricas reales de Open-RootERP
+**Versión:** 1.2
+**Fecha:** 2026-09-07
+**Estado:** Corregido con métricas reales de Open-RootERP; nota de comparabilidad multi-caso añadida
 **Autor:** Adónis Adonai Gómez Martínez
 
 ---
@@ -30,6 +30,10 @@ Este documento define el **sistema de métricas SAQI** para evaluar la efectivid
 ---
 
 ## 3. Catálogo de Métricas SAQI
+
+> **Nota de comparabilidad multi-caso (v1.2):** desde 2026-09-07 la cartera observacional incluye **5 proyectos** (Open-RootERP, ZeroQA, AutoMixer, Discipline, Flight Mainframe Simulator). Para que las métricas de SAQI-007 sean comparables entre casos, se establecen dos normas reforzadas:
+> 1. **Fuente única de verdad por métrica** — p. ej. el total de tests de un proyecto debe tener un único valor canónico (self-referencia de la lección detectada en ZeroQA: discrepancias README vs PROJECT_STATE → ver SAQI-CASE-002 §6).
+> 2. **Carvaus de métricas por stack** — las métricas que dependen de la herramienta (coverage, mutation, E2E, Lighthouse, a11y) se reportan junto con su instrumento concreto, indicando "N/A / no aplica" cuando el stack no lo soporte (p. ej. app de escritorio sin playertest web).
 
 ### 3.1 Métricas de Calidad de Producto (Product Quality Metrics)
 

@@ -1,17 +1,17 @@
 # SAQI-009: Amenazas a la Validez y Limitaciones
 
-**Versión:** 1.1
-**Fecha:** 2026-07-17
-**Estado:** Corregido con análisis realista del caso de estudio
+**Versión:** 1.2
+**Fecha:** 2026-09-07
+**Estado:** Ampliado a cartera multi-caso (N=5 observacional)
 **Autor:** Adónis Adonai Gómez Martínez
 
 ---
 
 ## 1. Introducción
 
-Este documento analiza sistemáticamente las **amenazas a la validez** (internal, external, construct, statistical conclusion) y **limitaciones inherentes** de la metodología SAQI y su caso de estudio inicial Open-RootERP. El objetivo es **transparencia científica**: identificar qué se sabe, qué no se sabe, y qué no se puede afirmar.
+Este documento analiza sistemáticamente las **amenazas a la validez** (internal, external, construct, statistical conclusion) y **limitaciones inherentes** de la metodología SAQI y su cartera de casos de estudio: **Open-RootERP** (SAQI-003, ERP vanilla JS offline), **ZeroQA** (SAQI-CASE-002, SaaS full-stack TS/Next), **AutoMixer** (SAQI-CASE-003, app de escritorio Python/audio), **Discipline** (SAQI-CASE-004, web Flask MVP pre-SAQI) y **Flight Mainframe Simulator** (SAQI-CASE-005, Rust/COBOL/DDD multi-crate). El objetivo es **transparencia científica**: identificar qué se sabe, qué no se sabe, y qué no se puede afirmar.
 
-**Principio rector**: **"No afirmar causalidad sin experimento controlado."** El caso Open-RootERP es **observacional (N=1)**, no experimental.
+**Principio rector**: **"No afirmar causalidad sin experimento controlado."** Todos los casos documentados son **observacionales (N=5 acumulado, sin grupo control)**, no experimentales.
 
 ---
 
@@ -93,53 +93,71 @@ Este documento analiza sistemáticamente las **amenazas a la validez** (internal
 
 ---
 
-## 7. Análisis de Riesgo: Open-RootERP como Caso Único (N=1)
+## 7. Análisis de Riesgo: De Caso Único (N=1) a Cartera Multi-Caso (N=5)
 
-### Matriz de Riesgo de Generalización
+### 7.1 Revisión de la amenaza "Single Case Study"
 
-| Afirmación | Soporte en Open-RootERP | Nivel de Evidencia | ¿Generalizable? |
+La amenaza original más crítica de SAQI era el **caso único (N=1)** (Open-RootERP). Con la incorporación de **cuatro casos adicionales observacionales**, el riesgo se **reduce parcialmente** (mayor base de evidencia y diversidad de stack/dominio), **pero no se elimina**: sigue sin haber grupo de control ni aleatorización. La tabla siguiente actualiza la matriz de riesgo de generalización con la nueva cartera.
+
+### Matriz de Riesgo de Generalización (actualizada a N=5)
+
+| Afirmación | Soporte en cartera SAQI | Nivel de Evidencia | ¿Generalizable? |
 |------------|------------------------|-------------------|-----------------|
-| "SAQI produce código de alta calidad" | 524+ tests, 100% pass, 0 P0 en release | **Observacional fuerte** | **NO** — N=1, sin control |
-| "QA Adversarial encuentra defectos críticos que unit tests no" | 4 P0 + 8 P1 solo en Fase 7 (27.4% total) | **Observacional fuerte** | **Hipótesis (H2)** — Requiere RCT |
-| "Skills reducen variabilidad" | Convenciones Context.md → 300/40 líneas, 0 innerHTML, patrones uniformes | **Observacional correlacional** | **Hipótesis (H2, H6)** — Requiere RCT |
-| "Contexto persistente evita pérdida decisiones" | 0 decisiones contradichas, 12 ADRs mantenidos, 34 checkpoints | **Observacional correlacional** | **Hipótesis (H3)** — Requiere cuasi-exp |
-| "Learn→Skills reduce defectos recurrentes" | Validación entrada: 8 (I2) → 1 (I6) = -87.5% | **Serie temporal N=1** | **Hipótesis (H4)** — Requiere longitudinal |
-| "SAQI es más eficiente que ad-hoc" | No medido (sin grupo control, sin tokens precisos, sin tiempo humano trackeado) | **Sin evidencia** | **Hipótesis (H1, H5)** — Requiere RCT |
+| "SAQI produce código de alta calidad" | Open-RootERP (524+ tests), ZeroQA (289 tests), AutoMixer (76 tests), Discipline (26 tests) | **Observacional fuerte** | **Parcial** — N=5, sin control, autocreados |
+| "QA Adversarial / integración detecta defectos que unit no cubren" | Open-RootERP (4 P0+8 P1 en Fase 7); ZeroQA (DEF-003…009 en E2E/adversarial) | **Observacional correlacional** | **Hipótesis (H2/Z-Hn)** — Requiere RCT |
+| "Skills reducen variabilidad" | Open-RootERP (convenciones); **ZeroQA (Skills SAQI declaradas: A-sdd, A-testing, etc.)**; FMS (AGENTS.md) | **Observacional correlacional** | **Hipótesis** — Requiere RCT |
+| "Contexto persistente evita pérdida de decisiones" | Open-RootERP (34 checkpoints); **ZeroQA (12 checkpoints ITER-*)** | **Observacional correlacional** | **Hipótesis (H3/Z-H2)** — Requiere cuasi-exp |
+| "Learn→Skills reduce defectos recurrentes" | Open-RootERP (-87.5%); **ZeroQA (DEF-005/006/007 → A-testing v2.1.0)** | **Serie temporal N=1 por caso** | **Hipótesis (H4)** — Requiere longitudinal |
+| "Métricas estables entre stacks" | Open-RootERP vs AutoMixer vs ZeroQA muestran **discrepancias de consolidación** (p. ej. total de tests) | **Observacional débil** | **Hipótesis** — Requiere normalización métricas (SAQI-007 lección) |
+| "SAQI es más eficiente que ad-hoc" | No medido (sin grupo control, tokens/tempo no instrumentados) | **Sin evidencia** | **Hipótesis (H1, H5)** — Requiere RCT |
+
+### 7.2 Revisión por caso de las amenazas de validez
+
+| Amenaza | Impacto en cartera N=5 | Mitigación parcial | Residual |
+|---------|------------------------|--------------------|----------|
+| **Single Case (N=1)** | **Reducida** — 5 proyectos, 5 stacks (offline JS, SaaS TS, desktop Python, Flask, Rust/COBOL) | Replicación en más proyectos/equipos; RCT (SAQI-008) | **Media-Alta** — sin control |
+| **Researcher Bias / Hawthorne** | **Persistente** — mismo autor en los 5 casos | Analista ciego; réplica independiente | **Media** |
+| **Confounding Variables** | **Persistente** — cambios simultáneos (skills, arquitectura, testing) | Diseño factorial (SAQI-008) | **Alta** |
+| **Skill Maturity Confound** | **Reducida** en ZeroQA (Skills SAQI declaradas); **persistente** en el resto (convenciones o AGENTS.md) | Medir madurez skill como covariable | **Media** |
+| **LLM Model Variability** | **Persistente** — modelo único (OpenCode default) | Multi-modelo (SAQI-014) | **Media** |
+| **Publication Bias** | **Persistente** | Documentar spikes/dead-ends en PROJECT_STATE | **Baja-Media** |
+| **Consistencia de métricas (nueva)** | **Emergente** — discrepancias de totales (ZeroQA README vs PROJECT_STATE) | Fuente única de verdad métrica (SAQI-007) | **Media** |
 
 ---
 
 ## 8. Declaración de No-Afirmaciones (What We Do NOT Claim)
 
-Basado en la evidencia actual (Open-RootERP N=1), **SAQI NO AFIRMA**:
+Basado en la evidencia actual (cartera observacional N=5, sin control), **SAQI NO AFIRMA**:
 
 1. ❌ **Superioridad** sobre desarrollo tradicional, Agile, TDD, DevOps, u otros enfoques asistidos por IA.
 2. ❌ **Reducción probada** de defectos en producción (Defect Escape Rate).
 3. ❌ **Aceleración probada** de velocidad de desarrollo (Cycle Time).
 4. ❌ **Reducción probada** de coste total de desarrollo.
-5. ❌ **Generalizabilidad** a otros stacks, dominios, tamaños de equipo, modelos LLM.
-6. ❌ **Madurez** de las Skills SAQI (actualmente 17 Skills base OpenCode; gobernanza SAQI-003 es propuesta).
+5. ❌ **Generalizabilidad** a otros stacks, dominios, tamaños de equipo, modelos LLM (aunque la cartera N=5 amplía la diversidad de stacks, todos comparten el mismo autor y modelo).
+6. ❌ **Madurez** de las Skills SAQI (gobernanza SAQI-003 sigue siendo propuesta; sólo ZeroQA declara Skills SAQI versionadas).
 7. ❌ **Automatización completa** (requiere intervención humana en 8 gates críticos).
 8. ❌ **Aplicabilidad inmediata** sin expertise en arquitectura, testing, seguridad, debugging.
 
 **LO QUE SÍ AFIRMAMOS (con evidencia observacional)**:
-- ✅ Open-RootERP **fue desarrollado** siguiendo **prácticas alineadas con principios SAQI** (convenciones obligatorias, QA adversarial integrado, docs vivos, debugging estructurado, retroalimentación a convenciones).
-- ✅ **Se observaron** métricas de calidad altas (524+ tests, 100% pass, 15+ defectos críticos/altos corregidos, 0 regresiones en release).
-- ✅ **Se formularon 7 hipótesis comprobables** (H1-H7) y **un protocolo experimental replicable** (SAQI-008) para validarlas.
-- ✅ **Se documentó transparentemente** el caso de estudio separando **Hechos / Interpretaciones / Hipótesis**.
+- ✅ **Cinco proyectos** fueron desarrollados siguiendo **prácticas alineadas con principios SAQI** (convenciones obligatorias o Skills declaradas, QA adversarial/integración, docs vivos, debugging estructurado, retroalimentación a convenciones): Open-RootERP, ZeroQA, AutoMixer, Discipline (bastión pre-SAQI) y Flight Mainframe Simulator.
+- ✅ **Se observaron métricas de calidad altas** en cada caso verificado (699+ tests totales entre los casos con resultados, cobertura ≥95% línea en ZeroQA, gates verdes).
+- ✅ **ZeroQA aporta el primer ejemplo trazable** del ciclo **Learn → Skills** (DEF-005/006/007 → `A-testing` v2.1.0), reforzando la plausibilidad del lazo de Fase 14.
+- ✅ **Se documentaron de forma separada Hechos / Interpretaciones / Hipótesis** en cada caso de estudio.
 
 ---
 
 ## 9. Plan de Mitigación a Futuro (Roadmap Validación)
 
-| Prioridad | Acción | Documento SAQI | Objetivo |
-|-----------|--------|----------------|----------|
-| **P0** | Replicar SAQI en **3+ proyectos distintos** (stack, dominio, equipo) | SAQI-021 | Validez externa inicial |
-| **P0** | Ejecutar **RCT piloto** (Grupo A ad-hoc vs Grupo B SAQI) con n≥10 tareas | SAQI-008 | Validez interna causal |
-| **P1** | Desarrollar **SAQI CLI/Tooling**: checkpointing auto, skill loader, metric collector, gate enforcer | SAQI-014 | Reducir overhead, aumentar adherencia, instrumentar métricas |
-| **P1** | Probar con **múltiples modelos LLM** (GPT-4o, Claude 3.5, Llama 3 70B, Qwen 7B local) | SAQI-014 | Robustez a modelo |
-| **P2** | Estudio **longitudinal 6-12 meses**: deuda técnica, onboarding, rotación, evolución requisitos | SAQI-014 | Efectos largo plazo |
-| **P2** | Caso **Brownfield**: migrar legacy a SAQI | SAQI-021 | Generalizabilidad beyond greenfield |
-| **P2** | Análisis **coste-beneficio real**: tokens instrumentados + time tracking humano | SAQI-007, SAQI-008 | Viabilidad económica |
+| Prioridad | Acción | Documento SAQI | Estado al 2026-09-07 | Objetivo |
+|-----------|--------|----------------|-----------------------|----------|
+| **P0** | Replicar SAQI en **3+ proyectos distintos** (stack, dominio, equipo) | SAQI-CASE-002…005 | ✅ **En curso/parcial** — 4 casos adicionales sobre Open-RootERP (zeroQA, automixer, discipline, FMS) | Validez externa inicial |
+| **P0** | Ejecutar **RCT piloto** (Grupo A ad-hoc vs Grupo B SAQI) con n≥10 tareas | SAQI-008 | ⬜ Diseñado | Validez interna causal |
+| **P1** | Desarrollar **SAQI CLI/Tooling**: checkpointing auto, skill loader, metric collector, gate enforcer | SAQI-014 | ⬜ Planificado | Reducir overhead, aumentar adherencia, instrumentar métricas |
+| **P1** | Probar con **múltiples modelos LLM** (GPT-4o, Claude 3.5, Llama 3 70B, Qwen 7B local) | SAQI-014 | ⬜ Planificado | Robustez a modelo |
+| **P1** | **Normalizar métricas entre casos** (fuente única de verdad; resolver discrepancia de totales en ZeroQA) | SAQI-007 | 🔶 **Nueva lección** (ver SAQI-CASE-002 §6) | Comparabilidad multi-caso |
+| **P2** | Estudio **longitudinal 6-12 meses**: deuda técnica, onboarding, rotación, evolución requisitos | SAQI-014 | ⬜ Planificado | Efectos largo plazo |
+| **P2** | Caso **Brownfield**: migrar legacy a SAQI | SAQI-021 | ⬜ Planificado | Generalizabilidad beyond greenfield |
+| **P2** | Análisis **coste-beneficio real**: tokens instrumentados + time tracking humano | SAQI-007, SAQI-008 | ⬜ Planificado | Viabilidad económica |
 
 ---
 

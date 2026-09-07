@@ -1,8 +1,8 @@
 # SAQI-001: Resumen Ejecutivo y Definición de la Metodología SAQI
 
-**Versión:** 1.0
-**Fecha:** 2026-07-17
-**Estado:** Borrador inicial
+**Versión:** 1.1
+**Fecha:** 2026-09-07
+**Estado:** Actualizado a cartera multi-caso (N=5 observacional)
 **Autor:** Adónis Adonai Gómez Martínez
 
 ---
@@ -115,9 +115,9 @@ El ciclo **Learn → Skills** es el elemento potencialmente diferenciador de SAQ
 
 ### 1.7 Caso de Estudio Inicial: Open-RootERP
 
-Open-RootERP es el **primer caso de estudio experimental** de SAQI, desarrollado mediante un flujo de ingeniería asistido por IA y agentes utilizando OpenCode con las 17 Skills disponibles.
+Open-RootERP es el **primer caso de estudio experimental** de SAQI, desarrollado mediante un flujo de ingeniería asistido por IA y agentes utilizando OpenCode con las 17 Skills disponibles. Desde 2026-09-07 la cartera observacional se amplió a **5 casos** (ver SAQI-003 y SAQI-CASE-002…005).
 
-**Métricas observadas (datos del caso de estudio, no evidencia causal):**
+**Métricas observadas Open-RootERP (datos del caso de estudio, no evidencia causal):**
 
 | Métrica | Valor Observado |
 |---------|-----------------|
@@ -130,7 +130,9 @@ Open-RootERP es el **primer caso de estudio experimental** de SAQI, desarrollado
 | Defectos relevantes encontrados y corregidos | 15+ |
 | Skills aplicadas / disponibles | 14 / 17 |
 
-**Nota importante:** Estas métricas son **hechos observados en un único caso de estudio**. No constituyen evidencia científica de que SAQI sea superior a otras metodologías. Se presentan como datos base para formular hipótesis que requieren validación experimental controlada.
+**Cartera multi-caso adicional (2026-09-07):** ZeroQA (289 tests, SaaS TS/Next, primera aplicación explícita de Skills SAQI + 12 checkpoints), AutoMixer (76 tests, app de escritorio Python/audio, gate de licencias), Discipline (26 tests, Web Flask MVP pre-SAQI, baseline) y Flight Mainframe Simulator (Rust/Tauri/COBOL, DDD multi-crate, fase temprana). Detalles en [SAQI-CASE-002](03-case-study/SAQI-CASE-002-zeroqa.md)…[SAQI-CASE-005](03-case-study/SAQI-CASE-005-flight-mainframe-simulator.md).
+
+**Nota importante:** Estas métricas son **hechos observados en una cartera de casos de estudio (N=5, sin grupo control)**. No constituyen evidencia científica de que SAQI sea superior a otras metodologías. Se presentan como datos base para formular hipótesis que requieren validación experimental controlada.
 
 ---
 

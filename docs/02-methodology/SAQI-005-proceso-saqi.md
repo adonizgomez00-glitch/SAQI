@@ -1,8 +1,13 @@
 # SAQI-005: Definición del Proceso SAQI — 14 Fases (DEFINE-DOCUMENT-APPLY-MEASURE-COMPARE-ITERATE-VALIDATE)
 
-**Versión:** 1.1
-**Fecha:** 2026-07-17
+**Versión:** 1.2
+**Fecha:** 2026-08-11
 **Estado:** Corregido con datos reales del caso de estudio Open-RootERP
+**Cambio clave v1.2:** añadida la "Política opcional de entrega escalonada (MVP-First)" (§2.1)
+y ajuste opcional del DoD de la Fase 4. **Traceabilidad:** lección ITER-001 — el interleave
+Build↔Test exhaustivo consume tokens y retrasa el feedback funcional; se prioriza MVP
+funcional con tests funcionales, y se condena el QA estricto (cobertura/mutation/regresión/
+adversarial/seguridad) a una macro-fase final antes del release.
 **Autor:** Adónis Adonai Gómez Martínez
 
 ---
@@ -85,7 +90,8 @@ El proceso SAQI consta de **14 fases secuenciales** con criterios de entrada/sal
 | **Responsable Humano** | Revisión código crítico (security, arquitectura, domain); Decisiones diseño no triviales; Aprobación merges |
 | **Responsable Agente** | Generación código + tests; Refactoring guiado por Skills; Linting/Typecheck; Commits |
 | **Artefactos Generados** | Código fuente (`src/`), Tests unitarios (`tests/unit/`, `tests/integration/`), Commits, `PROJECT_STATE.md` actualizado |
-| **Criterio Salida** | 100% tests unitarios pass; Coverage ≥ 80% L / 75% B / 80% F; Mutation Score ≥ 70%; 0 lint/type errors; Code review crítica aprobada; `PROJECT_STATE.md` refleja completado |
+| **Artefactos Generados** | Código fuente (`src/`), Tests unitarios (`tests/unit/`, `tests/integration/`), Commits, `PROJECT_STATE.md` actualizado |
+| **Criterio Salida** | 100% tests pass; Coverage ≥ 80% L / 75% B / 80% F; Mutation Score ≥ 70%; 0 lint/type errors; Code review crítica aprobada; `PROJECT_STATE.md` refleja completado. <br>**Modo MVP-First (§2.1):** salida 100% tests unitarios + coverage/mutation **se pospone** a la macro-fase final; la salida de Fase 4 es MVP funcional con tests funcionales (AC) pass + 0 lint/type errors. |
 
 **Evidencia Open-RootERP**: Desarrollo iterativo por módulo (14 módulos), código + tests simultáneos, DI en `app.js`, commits convencionales, `PROJECT_STATE.md` actualizado
 
@@ -250,6 +256,48 @@ El proceso SAQI consta de **14 fases secuenciales** con criterios de entrada/sal
 | **Criterio Salida** | Skills afectadas versionadas; Changelog trazable a defectos/iteración; Tests Skill pasan; Aprobación gobernanza |
 
 **Evidencia Open-RootERP**: **Simulado implícitamente** — `Context.md` (convenciones proyecto) refinado tras fixes: límites 300/40 líneas, patrón transacción atómica, sanitización obligatoria, weighted scoring import, tiebreaker documentId. **NO son Skills versionadas gobernadas SAQI**, son convenciones de proyecto.
+
+---
+
+## 2.1 Política opcional de entrega escalonada (MVP-First / "Funcional primero")
+
+La macro-fase SAQI (`DEFINE → … → VALIDATE`) es el **default obligatorio para releases**.
+Sin embargo, un proyecto **PUEDE optar** por la **Política MVP-First** cuando el objetivo
+es validar funcionalidad rápidamente por módulo/fase y el costo de intercalar QA exhaustiva
+en cada historia es inaceptable (p. ej. alto costo de tokens/context-window, prototipos,
+spikes). Esta política está basada en la lección aprendida de ITER-001:
+
+> *Se ha determinado que se gastan muchos tokens cuando se hacen tests exhaustivos por
+> módulo y se verifican al 100% antes de pasar a la siguiente fase. Por tanto, se prioriza
+> primero un MVP funcional haciendo pruebas funcionales, para luego pasar al siguiente
+> módulo o fase; la fase final de QA (tests unitarios, regresiones, seguridad) se realiza
+> al final, cuando ya existe software funcional.*
+
+### Reglas de la Política MVP-First
+1. **DoD de Fase 4 (Build) en modo MVP-First:** el módulo/funcionalidad está **funcional
+   y verificable**: los *Acceptance Criteria / tests funcionales* asociados a esa historia
+   **pasan**; `cargo check`/`typecheck` OK; **lint OK** (no se acumula deuda de lint).
+   **NO** se exige cobertura ≥80% ni mutation ≥70% como salida de Fase 4 en este modo.
+2. **QA estricto es una macro-fase final (Fases 5–7, 10, 11)** que se ejecuta sobre el MVP
+   funcional consolidado (un módulo, o N módulos, o un release), **antes** del Verify/sign-off.
+3. **Checkpoint 70%/80%:** el agente prioriza entregar funcionalidad validada; el *coverage
+   gap* y el *mutation gap* se registran en `QA_RESULTS.md` como deuda a cerrar en la fase final.
+4. **No se pospone para siempre:** la macro-fase final QA está **garantizada** antes del
+   release de cualquier macro-iteración que produzca artefacto entregable.
+5. **RACI ajustado:** el Tech Lead **A** prueba que el MVP funciona; el agente itera módulos;
+   el QA Lead **A** la macro-fase final.
+
+### Impacto en el tablero de fases
+| Fase | Modo estándar | Modo MVP-First |
+|------|----------------|----------------|
+| 4. Build | Código + tests unitarios L1; coverage≥80%, mutation≥70%, 0 lint | Código + **tests funcionales** (AC) pass; 0 lint; coverage/mutation **diferidos** |
+| 5. Test L1-L2 | Unit/Integration con umbrales | Se pospone → macro-fase final |
+| 6. Test L3-L4 | Functional/E2E | Se ejecuta por módulo (MVP) ✅ + macro-fase final |
+| 7. Break | Adversarial | Sólo áreas afectadas + macro-fase final |
+| 11. Verify | Todas las gates | Gates finales incluyen coverage≥80%/mutation≥70% acumulados |
+
+> **Nota:** Este modo no elimina el QA; lo **condensa**. Si un módulo requiere DoD estricta
+> por riesgo (seguridad, pagos), el Tech Lead puede elevarlo individualmente.
 
 ---
 

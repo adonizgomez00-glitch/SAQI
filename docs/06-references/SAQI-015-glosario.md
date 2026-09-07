@@ -1,8 +1,8 @@
 # SAQI-015: Glosario y Terminología
 
-**Versión:** 1.0
-**Fecha:** 2026-07-17
-**Estado:** Borrador inicial
+**Versión:** 1.1
+**Fecha:** 2026-09-07
+**Estado:** Añadida lectura alternativa "SAQI Contexto" (Save/Acquire/Question/Inspire) de AutoMixer
 **Autor:** Adónis Adonai Gómez Martínez
 
 ---
@@ -20,6 +20,7 @@
 | **QA Adversarial (Adversarial QA)** | Fase obligatoria (Fase 7: BREAK) donde el sistema (humano + agente en modo atacante) **intenta romper deliberadamente** el software mediante taxonomía de 8 categorías ATK-* (Inputs, Estados, Stress, Chaos, Seguridad, A11y, Concurrencia, Recuperación). |
 | **Ciclo Learn → Skills** | Retroalimentación cerrada donde hallazgos de cada iteración (defectos, patrones, gaps) se **materializan en mejoras de Skills versionadas** (nuevas reglas, plantillas, anti-patrones), que el agente usa en la siguiente iteración/proyecto. |
 | **Iteración SAQI** | Una pasada completa por las **14 fases** (Plan → Architect → Skill Selection → Build → Test L1-L2 → Test L3-L4 → Break → Diagnose → Fix → Regression → Verify → Document → Learn → Improve Skills). |
+| **SAQI Contexto (lectura alternativa)** | Reinterpretación del acrónimo aplicada por el proyecto **AutoMixer** en `LIVE_CONTEXT.md` como **Save / Acquire / Question / Inspire** (SAQI-CASE-003). Complementa la lectura "proceso de 14 fases": **Save** (inventariar contexto externo), **Acquire** (cubrir brechas), **Question** (confrontar decisiones/gaps), **Inspire** (guiar la siguiente fase). No sustituye la definición formal, sino que describe el **patrón de gestión de contexto vivo** de SAQI-013. |
 
 ---
 

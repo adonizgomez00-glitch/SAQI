@@ -1,8 +1,8 @@
 # SAQI-014: Trabajo Futuro y Hoja de Ruta de Investigación
 
-**Versión:** 1.0
-**Fecha:** 2026-07-17
-**Estado:** Borrador inicial
+**Versión:** 1.1
+**Fecha:** 2026-09-07
+**Estado:** Actualizado con cartera multi-caso real (N=5)
 **Autor:** Adónis Adonai Gómez Martínez
 
 ---
@@ -13,19 +13,34 @@ SAQI es una **metodología experimental** en etapa temprana. Este documento traz
 
 **Objetivo a 3 años**: SAQI v2.0 con validación experimental robusta, tooling maduro, y adopción temprana en 3+ organizaciones.
 
+**Progreso notable (2026-09-07):** el paso de N=1 a **N=5 casos observacionales** ya se ha iniciado (ver §2.1), ampliando la diversidad de stacks y dominios cubiertos.
+
 ---
 
 ## 2. Prioridad Inmediata (0-6 meses): Validación Empírica
 
 ### 2.1 Réplica Múltiple de Casos de Estudio (P0)
-| Acción | Detalle | Entregable |
-|--------|---------|------------|
-| **Proyecto 2** | Aplicar SAQI a **SaaS online** (React/TS + Node/Express + PostgreSQL + Playwright) | Caso estudio SAQI-CASE-002 |
-| **Proyecto 3** | Aplicar SAQI a **Mobile offline-first** (React Native + SQLite/Expo + Detox) | Caso estudio SAQI-CASE-003 |
-| **Proyecto 4** | Aplicar SAQI a **CLI/Backend** (Go + SQLite + gRPC + k6) | Caso estudio SAQI-CASE-004 |
-| **Análisis cruzado** | Comparar métricas, adaptaciones Skills, gaps por stack | Paper: "SAQI Across Stacks" |
 
-**Criterio de éxito**: ≥ 3 proyectos completados con métricas SAQI-007 comparables, Skills reutilizadas ≥ 70%.
+#### ✓ Casos observacionales documentados (2026-09-07)
+
+| Caso | Doc SAQI | Stack / Dominio | Estado |
+|------|----------|-----------------|--------|
+| Open-RootERP (original) | [SAQI-003](SAQI-003-caso-estudio-open-rooterp.md concordante) | ERP offline-First (Vanilla JS + IndexedDB/Dexie) | ✅ Documentado |
+| **ZeroQA** | `SAQI-CASE-002-zeroqa.md` | SaaS full-stack (Next.js/TS/Prisma/PostgreSQL/Playwright) | ✅ Documentado |
+| **AutoMixer** | `SAQI-CASE-003-automixer.md` | App de escritorio (Python/PySide6/FFmpeg/Qt) | ✅ Documentado |
+| **Discipline** | `SAQI-CASE-004-discipline.md` | Web Flask/SQLite (MVP pre-SAQI) | ✅ Documentado (baseline) |
+| **Flight Mainframe Simulator** | `SAQI-CASE-005-flight-mainframe-simulator.md` | Escritorio Rust/Tauri/COBOL (DDD multi-crate) | ✅ Documentado (fase temprana) |
+
+#### Próximas réplicas planificadas
+
+| Acción | Detalle | Entregable | Estado |
+|--------|---------|------------|--------|
+| **Proyecto Mobile offline-first** | Aplicar SAQI a (React Native + SQLite/Expo + Detox) | Caso estudio SAQI-CASE-006 | ⬜ Planificado |
+| **Proyecto CLI/Backend** | Aplicar SAQI a (Go + SQLite + gRPC + k6) | Caso estudio SAQI-CASE-007 | ⬜ Planificado |
+| **Caso Brownfield** | Migrar proyecto legacy existente a SAQI | Caso estudio SAQI-CASE-008 | ⬜ Planificado |
+| **Análisis cruzado** | Comparar métricas, adaptaciones Skills, gaps por stack de la cartera N=5 | Paper: "SAQI Across Stacks" | ⬜ Planificado |
+
+**Criterio de éxito revisado**: ≥ 3 **réplicas completas e independientes** con métricas SAQI-007 comparables y Skills reutilizadas ≥ 70% (los casos actuales son observacionales del mismo autor; el criterio experimental requiere réplicas independientes).
 
 ### 2.2 RCT Piloto (P0)
 | Acción | Detalle | Entregable |

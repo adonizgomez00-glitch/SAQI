@@ -112,6 +112,10 @@
 | Doc | Título | Descripción |
 |-----|--------|-------------|
 | [SAQI-003](docs/03-case-study/SAQI-003-caso-estudio-open-rooterp.md) | Caso de Estudio Open-RootERP (Corregido) | **Hechos observados** (524+ tests, 15+ defectos, 14 módulos), **Interpretaciones**, **Hipótesis** H1-H7, lecciones reales, limitaciones N=1 |
+| [SAQI-CASE-002](docs/03-case-study/SAQI-CASE-002-zeroqa.md) | Caso de Estudio ZeroQA | SaaS full-stack (Next.js/TS/Prisma/PostgreSQL/Playwright). Primera aplicación explícita de Skills SAQI; 12 checkpoints; ciclo Learn→Skills trazable (A-testing v2.1.0); 289 tests |
+| [SAQI-CASE-003](docs/03-case-study/SAQI-CASE-003-automixer.md) | Caso de Estudio AutoMixer | App de escritorio (Python/PySide6/FFmpeg/Qt). Fakes primero → adaptador real; umbrales numéricos D2; gate de release por licencias; lectura alternativa del acrónimo |
+| [SAQI-CASE-004](docs/03-case-study/SAQI-CASE-004-discipline.md) | Caso de Estudio Discipline | Web Flask/SQLite (MVP pre-SAQI). Línea de base observacional: la entrada al ciclo SAQI desde un MVP validado |
+| [SAQI-CASE-005](docs/03-case-study/SAQI-CASE-005-flight-mainframe-simulator.md) | Caso de Estudio FMS | Escritorio Rust/Tauri/COBOL (DDD multi-crate, MCP). Convenciones AGENTS.md como semilla de Skills; stack heterogéneo |
 | [SAQI-011](docs/03-case-study/SAQI-011-guia-aplicacion-open-rooterp.md) | Guía de Aplicación Open-RootERP | 6 iteraciones detalladas, patrones clave (Repository+Dexie, Service Layer, Zod validation, Import auto-detect v2), checklist aplicación, plantillas docs |
 
 ### Validación (04-validation/)
@@ -119,7 +123,7 @@
 |-----|--------|-------------|
 | [SAQI-007](docs/04-validation/SAQI-007-metricas.md) | Marco de Atributos de Calidad y Métricas | ISO 25010 adaptado, 35+ métricas (Producto, Proceso, Skills, Coste, Contexto, Aprendizaje), dashboard iteración, recolección automatizada vs manual |
 | [SAQI-008](docs/04-validation/SAQI-008-protocolo-experimental.md) | Diseño Experimental y Protocolo de Validación | RCT 3 brazos (Ad-hoc vs SAQI vs SAQI-Light), 10 tareas, 30+ equipos, variables PICOC, análisis estadístico planificado |
-| [SAQI-009](docs/04-validation/SAQI-009-amenazas-validez-limitaciones.md) | Amenazas a la Validez y Limitaciones | Análisis exhaustivo: validez interna/externa/constructo/estadística, limitaciones inherentes SAQI, limitaciones caso N=1, matriz evidencia/afirmación |
+| [SAQI-009](docs/04-validation/SAQI-009-amenazas-validez-limitaciones.md) | Amenazas a la Validez y Limitaciones | Análisis exhaustivo: validez interna/externa/constructo/estadística, limitaciones inherentes SAQI, cartera multi-caso N=5, matriz evidencia/afirmación |
 
 ### Referencias (06-references/)
 | Doc | Título |
@@ -189,7 +193,7 @@ opencode skill enable A-coding-standards A-project-architecture A-secure-coding 
 | **Mutation Score** | 72% | Custom mutation testing (1,247 mutantes) |
 | **Skills Aplicables/OpenCode** | 14/17 | Mapeo real en SAQI-003 |
 
-> **⚠️ Importante**: Estos son **hechos observados en un único caso (N=1)**. No constituyen evidencia causal de superioridad de SAQI. Sirven para formular hipótesis (H1-H7) que requieren validación experimental (SAQI-008).
+> **⚠️ Importante**: Estos son **hechos observados en el caso original Open-RootERP (N=1)**. No constituyen evidencia causal de superioridad de SAQI. Desde 2026-09-07 la cartera observacional se amplió a **5 casos** (ver [tabla de casos de estudio](#-caso-de-estudio-03-case-study) y SAQI-CASE-002…005); aun así, sigue sin haber grupo control y todos comparten autor y modelo. Las métricas sirven para formular hipótesis (H1-H7 y las específicas de cada caso) que requieren validación experimental (SAQI-008).
 
 ---
 
@@ -197,11 +201,12 @@ opencode skill enable A-coding-standards A-project-architecture A-secure-coding 
 
 | Hito | Descripción | Estado |
 |------|-------------|--------|
-| **Réplica 1** | Aplicar SAQI en 3I SAQI en proyecto distinto (stack, dominio, equipo) | 📋 Planificado |
-| **Réplica 2-3** | Mínimo 3 proyectos totales para validez externa inicial | 📋 Planificado |
+| **Réplica 1** | Aplicar SAQI en proyecto distinto (stack, dominio, equipo) | ✅ zeroQA documentado (SAQI-CASE-002) + automixer (003), discipline (004), FMS (005) |
+| **Réplica 2-3** | Mínimo 3 proyectos totales para validez externa inicial | 🔶 4 casos observacionales nuevos (N=5 acumulado) — réplicas independientes pendientes |
 | **RCT Piloto** | Ejecutar SAQI-008: Grupo A (ad-hoc) vs Grupo B (SAQI) | 📋 Diseñado |
 | **Multi-Modelo** | Probar con GPT-4o, Claude 3.5, Llama 3 70B, modelos locales 7B | 📋 Planificado |
 | **Tooling SAQI** | CLI para checkpointing, skill loading, metric collection, gate enforcement | 📋 Diseñado (SAQI-014) |
+| **Normalización métricas** | Fuente única de verdad por métrica; resolver discrepancias (lección ZeroQA) | 🔶 Nueva lección (SAQI-007 v1.2) |
 
 ---
 
@@ -209,13 +214,13 @@ opencode skill enable A-coding-standards A-project-architecture A-secure-coding 
 
 | Categoría | Limitación Principal |
 |-----------|---------------------|
-| **Evidencia** | Un solo caso de estudio (N=1), auto-experimentación, sin grupo control |
-| **Generalización** | Stack específico (Vanilla JS + Dexie + IndexedDB), greenfield, 1 desarrollador |
-| **Métricas** | Coste/tokens estimados, no instrumentados; métricas skill = convenciones proyecto, no Skills SAQI gobernadas |
-| **Metodología** | Fase 7 integrada en E2E (no separada); Skills = convenciones proyecto, no artefactos versionados/gobernados SAQI |
+| **Evidencia** | Cartera observacional de **5 casos** (Open-RootERP, ZeroQA, AutoMixer, Discipline, FMS), auto-experimentación, **sin grupo control**; réplicas independientes pendientes |
+| **Generalización** | Diversidad de stacks ampliada (Vanilla JS+Dexie, Next.js/TS/Prisma, Python/PySide6, Flask, Rust/COBOL/Tauri), pero **mismo autor y mismo modelo** en todos |
+| **Métricas** | Coste/tokens estimados, no instrumentados; métricas skill = convenciones/AGENTS.md salvo ZeroQA (Skills SAQI declaradas); discrepancias de consolidación detectadas |
+| **Metodología** | Fase 7 integrada en E2E en parte de los casos; gobernanza de Skills SAQI-003 sigue siendo propuesta |
 | **Riesgo IA** | Mismo modelo genera código y tests; mitigado por QA adversarial modo atacante + humano |
 
-> Ver [SAQI-009](docs/04-validation/SAQI-009-amenazas-validez-limitaciones.md) para análisis exhaustivo.
+> Ver [SAQI-009](docs/04-validation/SAQI-009-amenazas-validez-limitaciones.md) para análisis exhaustivo (actualizado a N=5).
 
 ---
 
