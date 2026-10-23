@@ -258,6 +258,18 @@ git push origin feature/nueva-skill-seguridad
 - **Autor**: Adónis Adonai Gómez Martínez
 - **Proyecto Base**: [Open-RootERP](https://github.com/adonis/apps-locales/erp-ligero-offline) (caso de estudio)
 - **Skills Base**: [OpenCode Skills](https://github.com/opencode-ai/opencode/tree/main/skills) (17 skills referencia)
+
+### Skills de opencode aportadas (8)
+- **app-e2e-tests** — Playwright e2e tests en packages/app/e2e
+- **component-tests** — Storybook-based Playwright component tests
+- **effect** — Effect TS/Node idioms and testing
+- **opencode-dev** — Debugging opencode itself during development
+- **rtl-aware-development** — Right-to-left layout and localization development
+- **sample-skill** — Ejemplo de skill (template)
+- **tui-tests** — OpenTUI renderer tests
+- **unit-tests** — Fast, reliable Bun unit tests
+
+Registro en `.opencode/skill/registry.yaml`. Fuente: [anomalyco/opencode](https://github.com/anomalyco/opencode).
 - **Metodología Relacionada**: [Agentic SE](https://arxiv.org/abs/2305.15294), [Context Engineering](https://arxiv.org/abs/2305.14225), [Harness Engineering](https://github.com/swe-bench/SWE-bench)
 
 ---
