@@ -268,17 +268,55 @@ git push origin feature/nueva-skill-seguridad
 - **Proyecto Base**: [Open-RootERP](https://github.com/adonis/apps-locales/erp-ligero-offline) (caso de estudio)
 - **Skills Base**: [OpenCode Skills](https://github.com/opencode-ai/opencode/tree/main/skills) (17 skills referencia)
 
-### Skills de opencode aportadas (8)
-- **app-e2e-tests** — Playwright e2e tests en packages/app/e2e
-- **component-tests** — Storybook-based Playwright component tests
-- **effect** — Effect TS/Node idioms and testing
-- **opencode-dev** — Debugging opencode itself during development
-- **rtl-aware-development** — Right-to-left layout and localization development
-- **sample-skill** — Ejemplo de skill (template)
-- **tui-tests** — OpenTUI renderer tests
-- **unit-tests** — Fast, reliable Bun unit tests
+### Skills de opencode aportadas — Consolidación v2
 
-Registro en `.opencode/skill/registry.yaml`. Fuente: [anomalyco/opencode](https://github.com/anomalyco/opencode).
+#### Skills Consolidadas SAQI (4 + 9 flujo + 1 condicional)
+
+| Skill | Tipo | Descripción | Submódulos |
+|-------|------|-------------|------------|
+| **saqi-testing** | Consolidada | Testing unificado: unit, e2e, component, tui | `unit`, `e2e`, `component`, `tui` |
+| **saqi-lean-code** | Consolidada | Código lean, anti-overengineering, auditoría, review | `principles`, `audit`, `review`, `standards` |
+| **saqi-spec-arch** | Consolidada | SDD ligero, arquitectura, patrones Effect | `sdd`, `architecture`, `effect-patterns` |
+| **saqi-qa-harness** | Consolidada | QA adversarial, testing standards, security gates | `adversarial`, `standards`, `security` |
+| **saqi-adaptive-mode** | Flujo | Modo ligero/estándar/riguroso con criterios concretos | — |
+| **saqi-vertical-slice** | Flujo | Historias pequeñas, criterios aceptación, checklist | — |
+| **saqi-skills-learning** | Flujo | Aprendizaje: detectar→root cause→evaluar→aplicar→versionar | — |
+| **saqi-token-optimizer** | Flujo | Recuperación selectiva, budgets, diagnóstico estancamiento | — |
+| **saqi-harness** | Flujo | Comandos validación, exit criteria, budgets, logging | — |
+| **saqi-context-manager** | Flujo | Contexto persistente (.saqi/), única fuente verdad | — |
+| **saqi-metrics** | Flujo | Tokens, tiempo, ciclos, defectos pre/post, experimento A/B | — |
+| **saqi-qa-cycles** | Flujo | Ciclo rápido (historia) vs profundo (riesgo/hito) | — |
+
+#### Skill Condicional (Carga Bajo Demanda)
+
+| Skill | Trigger | Descripción |
+|-------|---------|-------------|
+| **rtl-aware-development** | `detect-rtl` | RTL/LTR behavior — solo carga si detecta logical properties, `dir="rtl"`, locales RTL, portaled components |
+
+#### Skills Legadas (Deprecated → Migradas)
+
+| Skill Original | Estado | Migrada a |
+|----------------|--------|-----------|
+| app-e2e-tests | `deprecated` | `saqi-testing:e2e` |
+| component-tests | `deprecated` | `saqi-testing:component` |
+| effect | `deprecated` | `saqi-spec-arch:effect-patterns` |
+| tui-tests | `deprecated` | `saqi-testing:tui` |
+| unit-tests | `deprecated` | `saqi-testing:unit` |
+| sample-skill | `archived` | Solo template de referencia |
+
+#### Skills Globales Activas (Referenciadas)
+
+| Skill | Fuente | Nivel | Descripción |
+|-------|--------|-------|-------------|
+| A-sdd | global | A | Spec-Driven Development (core) |
+| A-testing | global | A | Testing standards |
+| A-secure-coding | global | A | Secure coding practices |
+| D-git-workflow | global | D | Git workflow practices |
+| C-debugging | global | C | Debugging skills |
+| B-database-design-sql | global | B | Database design SQL |
+| ponytail / ponytail-audit / ponytail-review | global | — | Lean code philosophy |
+
+**Registro completo en `.opencode/skill/registry.yaml`**. Fuente original: [anomalyco/opencode](https://github.com/anomalyco/opencode).
 - **Metodología Relacionada**: [Agentic SE](https://arxiv.org/abs/2305.15294), [Context Engineering](https://arxiv.org/abs/2305.14225), [Harness Engineering](https://github.com/swe-bench/SWE-bench)
 
 ---

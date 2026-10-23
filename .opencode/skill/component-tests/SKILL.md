@@ -1,7 +1,16 @@
 ---
 name: component-tests
-description: Use when writing, changing, debugging, or reviewing Storybook-based Playwright component tests. That covers specs in packages/app/component-tests or packages/session-ui/component-tests, `*.fixture.tsx` files there or beside source (such as packages/gui-extensions/src/browser/panel.fixture.tsx), the stories they mount, and the shared harness in packages/storybook (playwright/config.ts, playwright/story.ts, .storybook/main.ts, preview.tsx, mocks). Also use when a component test is flaky, passed on retry, or fails with "Execution context was destroyed", "Failed to fetch dynamically imported module", or `#storybook-root` hidden. Covers mount args, source modules imported by URL, Vite dependency pre-bundling and reloads, cold vs warm Storybook, mobile drawers, geometry, and checks before pushing.
+description: Use when writing, changing, debugging, or reviewing Storybook-based Playwright
+  component tests. That covers specs in packages/app/component-tests or packages/session-ui/component-tests,
+  `*.fixture.tsx` files there or beside source (such as packages/gui-extensions/src/browser/panel.fixture.tsx),
+  the stories they mount, and the shared harness in packages/storybook (playwright/config.ts,
+  playwright/story.ts, .storybook/main.ts, preview.tsx, mocks). Also use when a component
+  test is flaky, passed on retry, or fails with "Execution context was destroyed",
+  "Failed to fetch dynamically imported module", or `#storybook-root` hidden. Covers
+  mount args, source modules imported by URL, Vite dependency pre-bundling and reloads,
+  cold vs warm Storybook, mobile drawers, geometry, and checks before pushing.
 ---
+
 
 # Component tests
 

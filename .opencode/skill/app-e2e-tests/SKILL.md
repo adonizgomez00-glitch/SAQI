@@ -1,7 +1,14 @@
 ---
 name: app-e2e-tests
-description: Use when writing, changing, reviewing, or debugging Playwright e2e tests in packages/app/e2e (regression keepers and user stories). Covers the mocked opencode server harness and the Bun static server, per-test isolation, page-load and route cost, the suite-wide service-worker block, races with first mount, hover, measurement, clock, dialogs and shortcuts, projects, shards and worker scheduling, rehearsing Windows timing locally, and diagnosing a CI flake from its artifacts. Not for Storybook component tests or e2e/performance benchmarks.
+description: Use when writing, changing, reviewing, or debugging Playwright e2e tests
+  in packages/app/e2e (regression keepers and user stories). Covers the mocked opencode
+  server harness and the Bun static server, per-test isolation, page-load and route
+  cost, the suite-wide service-worker block, races with first mount, hover, measurement,
+  clock, dialogs and shortcuts, projects, shards and worker scheduling, rehearsing
+  Windows timing locally, and diagnosing a CI flake from its artifacts. Not for Storybook
+  component tests or e2e/performance benchmarks.
 ---
+
 
 # App e2e tests
 

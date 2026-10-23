@@ -1,0 +1,2 @@
+| Fecha | Tipo | Resultado | Detalles |
+|-------|------|-----------|----------|
