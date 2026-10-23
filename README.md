@@ -2,7 +2,7 @@
 
 > **Una metodología experimental de ingeniería de software para desarrollo asistido por agentes de IA**
 
-[![Versión](https://img.shields.io/badge/versión-1.0-blue)](https://github.com/adonis/SAQI)
+[![Versión](https://img.shields.io/badge/versión-2.0--experimental-blue)](https://github.com/adonis/SAQI)
 [![Estado](https://img.shields.io/badge/estado-experimental-orange)](https://github.com/adonis/SAQI)
 [![Licencia](https://img.shields.io/badge/licencia-CC--BY--4.0-blue)](LICENSE)
 
@@ -10,83 +10,92 @@
 
 ## 📋 Resumen Ejecutivo
 
-**SAQI (Skill-based Agentic Quality Iteration)** es una metodología que estructura el desarrollo de software asistido por agentes de IA mediante:
+**SAQI v2 (Skill-based Agentic Quality Iteration)** es una metodología que estructura el desarrollo de software asistido por agentes de IA mediante:
 
-1. **Skills versionadas y gobernadas** — Artefactos de conocimiento reutilizables (reglas, patrones, plantillas, criterios de verificación) en 4 niveles (A: Core, B: Dominio, C: Verificación, D: Soporte)
-2. **Ciclo de vida de 14 fases** — Desde Plan hasta Mejora de Skills, con gates de calidad obligatorios y responsables humano/agente explícitos
-3. **QA Dual** — Testing convencional (Unit → Integration → Functional → E2E) + **QA Adversarial obligatorio** (Fase 7: 8 categorías de ataque ATK-*)
-4. **Contexto persistente** — 4+1 documentos vivos (`ARCHITECTURE.md`, `CONTEXT.md`, `PROJECT_STATE.md`, `QA_RESULTS.md`, `SESSION.md`) + protocolo de checkpointing automático
-5. **Retroalimentación cerrada Learn → Skills** — Hallazgos de cada iteración materializan mejoras en Skills versionadas (SemVer + Changelog trazable a defectos)
+1. **Desarrollo incremental por resultados** — Vertical slices pequeñas con outcome verificable, criterios de aceptación claros, alcance mínimo necesario
+2. **Modo adaptativo de ejecución** — Tres niveles (Ligero/Estándar/Riguroso) con criterios concretos de selección según tamaño, complejidad y riesgo
+3. **ODD + SDD ligero** — Outcome verificable como punto de partida; template ≤10 líneas por historia (resultado, ACs, constraints, tests, riesgos)
+4. **TDD selectivo por riesgo** — Test-first obligatorio para reglas negocio, validaciones, permisos, algoritmos edge cases; test-after para resto
+5. **Anti-sobreingeniería** — Checklist obligatorio: no abstracciones sin necesidad demostrada, no refactors ajenos, no deps innecesarias
+6. **QA Dual con dos ciclos** — Ciclo rápido por historia (funcional + tests pertinentes + lint/typecheck) + Ciclo profundo por riesgo/hito (adversarial completo, seguridad, stress, regresión ampliada)
+7. **Skills versionadas con aprendizaje v2** — Flujo 8 pasos (detectar→reproducir→causa raíz→clasificar→evaluar mecanismo→aplicar→validar→versionar), prioridad ejecutable > instruccional (lint/contract/check/pattern/rule/doc), carga selectiva
+8. **Estrategia explícita de eficiencia** — 10 reglas operativas (TE-01 a TE-10), limitación declarada (no medición real tokens), 5 métricas nuevas (TE-11 a TE-15)
+9. **Contexto persistente sin burocracia** — Única fuente de verdad por clase info, anti-duplicación, actualización solo en checkpoints significativos
+10. **Validación experimental A vs B** — Grupo A (incremental baseline) vs Grupo B (+Skills, contexto, QA adaptativo, Learn→Skills), criterios éxito medibles
 
 **Principio rector**: *No afirmamos superioridad. Definimos → Documentamos → Aplicamos → Medimos → Comparamos → Iteramos → Validamos.*
 
 ---
 
-## 🎯 Objetivos de SAQI
+## 🎯 Objetivos de SAQI v2
 
 | ID | Objetivo | Métrica de Evaluación |
 |----|----------|----------------------|
-| OE1 | Definir ciclo de vida con fases, criterios y responsables explícitos | SAQI-005 documentado y aplicado en caso de estudio |
-| OE2 | Codificar conocimiento de ingeniería en Skills versionadas y gobernadas | 17 Skills base, gobernanza SAQI-003 |
-| OE3 | Integrar QA adversarial como fase obligatoria con taxonomía de ataques | Fase 7 (ATK-*) gate de release |
-| OE4 | Implementar gestión de contexto persistente para agentes | 4 docs vivos + checkpointing (SAQI-013) |
-| OE5 | Establecer ciclo de retroalimentación Skills ← Iteración | Fase 14: análisis defectos → reglas Skills |
-| OE6 | Definir métricas para evaluar y comparar la metodología | Marco SAQI-007 (6 categorías) |
-| OE7 | Documentar caso de estudio separando hechos/interpretaciones/hipótesis | SAQI-003 (Open-RootERP) |
-| OE8 | Diseñar protocolo experimental para validación controlada | SAQI-008 (RCT replicable) |
+| OE1 | **Desarrollo incremental por resultados** — Vertical slices con outcome verificable | Historias cerradas con ACs passing; 0 scope creep |
+| OE2 | **Modo adaptativo de ejecución** — 3 niveles con criterios concretos | % tareas en modo correcto (auditoría); 0 bajadas indebidas de Riguroso |
+| OE3 | **ODD + SDD ligero integrado** — Template ≤10 líneas por historia | 100% historias con template completo; 0 specs extensas innecesarias |
+| OE4 | **TDD selectivo por riesgo** — Test-first donde aporte valor | Cobertura test-first en reglas críticas 100%; 0 TDD mecánico en bajo riesgo |
+| OE5 | **Anti-sobreingeniería obligatoria** — Checklist en Fase 4 | 0 abstracciones/deps/refactors no justificados en code review |
+| OE6 | **QA Dual con dos ciclos** — Rápido (historia) + Profundo (riesgo/hito) | 100% historias con ciclo rápido; ciclos profundos solo por triggers |
+| OE7 | **Skills versionadas con aprendizaje v2** — Flujo 8 pasos, prioridad ejecutable | `defect_prevention_rate` > 80% reglas MUST; `false_positive_rate` < 10% |
+| OE8 | **Estrategia eficiencia tokens** — 10 reglas + 5 métricas | TE-11 (tokens/story) ↓20% YoY; TE-12 (cycles/story) ≤1.5 |
+| OE9 | **Contexto persistente sin burocracia** — Única fuente verdad, checkpoints significativos | `Context Staleness Index` = 0; 0 duplicación entre docs vivos |
+| OE10 | **Validación experimental A vs B** — RCT con criterios medibles | DER ↓30% (Cliff's δ≥0.33); ADR ≥25%; CT no aumento >20% |
 
 ---
 
-## 🏗️ Arquitectura Metodológica
+## 🏗️ Arquitectura Metodológica v2
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        SKILLS (vN.M.P)                          │
-│  Reglas, Patrones, Procedimientos, Plantillas, Criterios Verif. │
+│                    MODO ADAPTATIVO (Selección)                  │
+│  Ligero (fixes ≤2 archivos) │ Estándar (features) │ Riguroso   │
+│  (auth/security/schema/pre-release)                            │
 └──────────────────────────┬──────────────────────────────────────┘
-                           │ Aplicar (Fase 3-4)
-                           ▼
+                           │
+          ┌────────────────┼────────────────┐
+          ▼                ▼                ▼
+┌──────────────────┐ ┌───────────────┐ ┌──────────────────┐
+│   HISTORIA       │ │   HISTORIA    │ │   HISTORIA       │
+│   (Outcome +     │ │   (Outcome +  │ │   (Outcome +     │
+│    ACs + Tests)  │ │    ACs + Tests)│ │    ACs + Tests)  │
+└────────┬─────────┘ └───────┬───────┘ └────────┬─────────┘
+         │                   │                   │
+         ▼                   ▼                   ▼
+┌──────────────────┐ ┌───────────────┐ ┌──────────────────┐
+│  CICLO RÁPIDO    │ │ CICLO RÁPIDO  │ │ CICLO RÁPIDO +   │
+│  (por historia)  │ │ (por historia)│ │ CICLO PROFUNDO   │
+│  - Funcional     │ │ - Funcional   │ │ (obligatorio     │
+│  - Tests áreas   │ │ - Tests áreas │ │  antes de merge) │
+│  - Lint/Typecheck│ │ - Lint/Typeck │ │ - Adversarial 8  │
+│  - Diff review   │ │ - Diff review │ │   categorías     │
+│  - ACs confirm   │ │ - ACs confirm │ │ - Seguridad      │
+└────────┬─────────┘ └───────┬───────┘ └────────┬─────────┘
+         │                   │                   │
+         └───────────────────┼───────────────────┘
+                             ▼
+              ┌─────────────────────────────┐
+              │     HITO / RELEASE          │
+              │   CICLO PROFUNDO (Gate)     │
+              │  - Adversarial completo     │
+              │  - Seguridad (SAST/DAST)    │
+              │  - Stress/Chaos/Concurrencia│
+              │  - Regresión completa L1-L5 │
+              │  - Migraciones + Rollback   │
+              └──────────────┬──────────────┘
+                             │
+                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                        BUILD                                    │
-│  Implementación asistida por agente con contexto persistente   │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ Genera
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        TEST (L1-L4)                             │
-│  Unit → Integration → Functional → E2E (Cobertura objetivo)    │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ Pasa
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        BREAK (QA Adversarial - L5) ⭐           │
-│  Intentar romper: Edge cases, Stress, Chaos, Security, A11y    │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ Encuentra defectos
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        FIX                                      │
-│  Debug estructurado → Causa raíz → Corrección mínima + test    │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ Corrige
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        VERIFY                                   │
-│  Regresión completa + Gates de calidad                         │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ Verifica
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                        LEARN                                    │
-│  Analizar: ¿Qué falló? ¿Qué patrón emergió? ¿Skill omitió algo? │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ Mejora
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     IMPROVE SKILLS (vN.M.P+1)                   │
-│  Nueva regla, plantilla fix, anti-patrón, criterio verificación │
+│                    LEARN → SKILLS v2                            │
+│  Detectar→Reproducir→Causa raíz→Clasificar→Evaluar mecanismo→  │
+│  Aplicar→Validar no contradicción→Versionar→Registrar impacto  │
+│  Prioridad: Lint/Contract/Check > Pattern > Rule > Doc         │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+**Flujo por defecto**: Modo Estándar → Ciclo Rápido por historia → Ciclo Profundo en hito/release
+**Modo Ligero**: Solo Ciclo Rápido
+**Modo Riguroso**: Ciclo Rápido + Ciclo Profundo obligatorio antes de merge
 
 ---
 
@@ -102,16 +111,16 @@
 ### Metodología (02-methodology/)
 | Doc | Título | Descripción |
 |-----|--------|-------------|
-| [SAQI-003](docs/02-methodology/SAQI-003-gobernanza-skills.md) | Gobernanza y Ciclo de Vida de Skills | Estructura canónica, 4 niveles (A-D), ciclo vida, versionado SemVer, testing de Skills, prevención propagación errores |
-| [SAQI-004](docs/04-validation/SAQI-004-qa-framework.md) | Marco de QA Funcional y Adversarial | 6 niveles QA, taxonomía 8 categorías ATK-*, protocolo Fase 7, clasificación defectos, roles |
-| [SAQI-005](docs/02-methodology/SAQI-005-proceso-saqi.md) | Definición del Proceso SAQI (14 Fases) | Entrada/Actividades/Responsable/Artefactos/Salida por fase, matriz RACI, métricas por fase |
+| [SAQI-003](docs/02-methodology/SAQI-003-gobernanza-skills.md) | Gobernanza y Ciclo de Vida de Skills v2 | Estructura canónica, 4 niveles (A-D), ciclo vida, versionado SemVer, testing de Skills, **aprendizaje v2 (flujo 8 pasos, prioridad ejecutable), carga selectiva** |
+| [SAQI-004](docs/04-validation/SAQI-004-qa-framework.md) | Marco de QA Funcional y Adversarial v2 | 6 niveles QA, taxonomía 8 categorías ATK-*, **dos ciclos QA (rápido/profundo con triggers)**, clasificación defectos, roles |
+| [SAQI-005](docs/02-methodology/SAQI-005-proceso-saqi.md) | Definición del Proceso SAQI v2 (14 Fases + Políticas) | **§2.2 Modo adaptativo (3 niveles), §2.3 ODD+SDD ligero, §2.4 Anti-sobreingeniería, §2.5 TDD selectivo**, matriz RACI, métricas por fase |
 | [SAQI-006](docs/02-methodology/SAQI-006-arquitectura-agente.md) | Especificación de Arquitectura de Agente | Componentes (Planner, Context Manager, Skill Registry, Tool Executor, Mode Controller), loop de ejecución, interfaz humano-agente, prompts por modo |
-| [SAQI-013](docs/02-methodology/SAQI-013-gestion-contexto.md) | Gestión de Contexto Persistente | 4+1 documentos vivos, protocolo checkpointing (70%/80%), re-hidratación, métricas contexto |
+| [SAQI-013](docs/02-methodology/SAQI-013-gestion-contexto.md) | Gestión de Contexto Persistente v2 | **§8 Contexto sin burocracia (única fuente verdad, anti-duplicación, checkpoints significativos)**, 4+1 documentos vivos, protocolo checkpointing |
 
 ### Caso de Estudio (03-case-study/)
 | Doc | Título | Descripción |
 |-----|--------|-------------|
-| [SAQI-003](docs/03-case-study/SAQI-003-caso-estudio-open-rooterp.md) | Caso de Estudio Open-RootERP (Corregido) | **Hechos observados** (524+ tests, 15+ defectos, 14 módulos), **Interpretaciones**, **Hipótesis** H1-H7, lecciones reales, limitaciones N=1 |
+| [SAQI-003](docs/03-case-study/SAQI-003-caso-estudio-open-rooterp.md) | Caso de Estudio Open-RootERP (Baseline v1) | **Hechos observados** (524+ tests, 15+ defectos, 14 módulos), **Interpretaciones**, **Hipótesis** H1-H7, lecciones reales, limitaciones N=1 — **Base para SAQI v2** |
 | [SAQI-CASE-002](docs/03-case-study/SAQI-CASE-002-zeroqa.md) | Caso de Estudio ZeroQA | SaaS full-stack (Next.js/TS/Prisma/PostgreSQL/Playwright). Primera aplicación explícita de Skills SAQI; 12 checkpoints; ciclo Learn→Skills trazable (A-testing v2.1.0); 289 tests |
 | [SAQI-CASE-003](docs/03-case-study/SAQI-CASE-003-automixer.md) | Caso de Estudio AutoMixer | App de escritorio (Python/PySide6/FFmpeg/Qt). Fakes primero → adaptador real; umbrales numéricos D2; gate de release por licencias; lectura alternativa del acrónimo |
 | [SAQI-CASE-004](docs/03-case-study/SAQI-CASE-004-discipline.md) | Caso de Estudio Discipline | Web Flask/SQLite (MVP pre-SAQI). Línea de base observacional: la entrada al ciclo SAQI desde un MVP validado |
@@ -121,8 +130,8 @@
 ### Validación (04-validation/)
 | Doc | Título | Descripción |
 |-----|--------|-------------|
-| [SAQI-007](docs/04-validation/SAQI-007-metricas.md) | Marco de Atributos de Calidad y Métricas | ISO 25010 adaptado, 35+ métricas (Producto, Proceso, Skills, Coste, Contexto, Aprendizaje), dashboard iteración, recolección automatizada vs manual |
-| [SAQI-008](docs/04-validation/SAQI-008-protocolo-experimental.md) | Diseño Experimental y Protocolo de Validación | RCT 3 brazos (Ad-hoc vs SAQI vs SAQI-Light), 10 tareas, 30+ equipos, variables PICOC, análisis estadístico planificado |
+| [SAQI-007](docs/04-validation/SAQI-007-metricas.md) | Marco de Atributos de Calidad y Métricas v2 | ISO 25010 adaptado, **§8 estrategia tokens (10 reglas TE + 5 métricas nuevas)**, 35+ métricas, dashboard iteración, recolección automatizada vs manual |
+| [SAQI-008](docs/04-validation/SAQI-008-protocolo-experimental.md) | Diseño Experimental y Protocolo de Validación v2 | **§9 Experimento A vs B (Grupo A baseline incremental vs Grupo B + mecanismos SAQI)**, RCT 3 brazos, 10 tareas, variables PICOC, análisis estadístico planificado |
 | [SAQI-009](docs/04-validation/SAQI-009-amenazas-validez-limitaciones.md) | Amenazas a la Validez y Limitaciones | Análisis exhaustivo: validez interna/externa/constructo/estadística, limitaciones inherentes SAQI, cartera multi-caso N=5, matriz evidencia/afirmación |
 
 ### Referencias (06-references/)
@@ -281,7 +290,7 @@ Registro en `.opencode/skill/registry.yaml`. Fuente: [anomalyco/opencode](https:
   title = {SAQI: Skill-based Agentic Quality Iteration},
   author = {Adónis Adonai Gómez Martínez},
   year = {2026},
-  note = {Metodología experimental — v1.0},
+  note = {Metodología experimental — v2.0},
   url = {https://github.com/adonis/SAQI}
 }
 ```
