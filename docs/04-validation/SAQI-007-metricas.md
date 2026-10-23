@@ -190,7 +190,42 @@ Variables dependientes primarias para comparación Grupo A (ad-hoc) vs Grupo B (
 
 ---
 
-## 8. Referencias Externas
+## 8. Estrategia Explícita de Eficiencia de Tokens (SAQI v2)
+
+### Principio
+**Menos tokens ≠ mayor eficiencia**. Una solución que consume menos tokens pero introduce defectos es más costosa en conjunto.
+
+### Reglas Operativas (Obligatorias en Fase 4)
+
+| Regla | Descripción | Implementación |
+|-------|-------------|----------------|
+| **TE-01** | Recuperar SOLO archivos/documentos relevantes | `grep`/`glob` antes de `read`; limitar `read` a ventana necesaria |
+| **TE-02** | Reutilizar instrucciones estables del repo | Cargar Skills/contexto desde `.opencode/skill/`, `CONTEXT.md`, `ARCHITECTURE.md` - no re-explicar |
+| **TE-03** | Evitar re-explicar contexto ya documentado | Referenciar sección/doc en lugar de copiar; agente lee fuente |
+| **TE-04** | Resúmenes de estado breves y actualizados | `PROJECT_STATE.md` ≤ 200 líneas; checkpoint al cerrar historia |
+| **TE-05** | Limitar tareas al cambio necesario | Vertical slice = 1 outcome verificable; no "refactor mientras" |
+| **TE-06** | Reducir salida de comandos/tests a resultados relevantes | `--reporter=minimal`; filtrar noise; solo fallos + summary |
+| **TE-07** | Evitar ciclos de corrección sin límite | **Budget**: máx 3 intentos fallidos consecutivos → STOP + diagnose |
+| **TE-08** | Presupuestos configurables de intentos/tokens | `SAQI_TOKEN_BUDGET`, `SAQI_MAX_RETRIES` env vars; defaults conservadores |
+| **TE-09** | Detenerse y diagnosticar si errores se repiten sin progreso | 3er fallo mismo tipo → root cause analysis obligatorio antes de continuar |
+| **TE-10** | No generar docs duplicados ni planes extensos para tareas pequeñas | Modo Ligero: solo diff + ACs; Modo Estándar: plan breve ≤ 10 líneas |
+
+### Limitación Declarada
+> **El agente NO puede medir directamente el consumo real de tokens** (depende de proveedor LLM). Debe declarar esta limitación y **no inventar estimaciones presentadas como mediciones**. Usar `CE-01` como proxy estimado, no como medición real.
+
+### Métricas de Eficiencia (Nuevas)
+
+| ID | Métrica | Fórmula | Objetivo |
+|----|---------|---------|----------|
+| **TE-11** | **Tokens per Story Accepted** | `Total tokens sesión / Historias cerradas` | Baseline → reducir 20% YoY |
+| **TE-12** | **Correction Cycles per Story** | `Intentos fallidos / Historia aceptada` | ≤ 1.5 |
+| **TE-13** | **Time to First Verifiable Outcome** | `Tiempo hasta primer AC passing` | < 30 min (Modo Estándar) |
+| **TE-14** | **Context Churn Rate** | `Líneas contexto añadidas/borradas / Iteración` | < 500 líneas |
+| **TE-15** | **Doc/Plan Overhead Ratio** | `Tokens docs+planes / Tokens código+tests` | < 0.3 |
+
+---
+
+## 9. Referencias Externas
 
 1. ISO/IEC 25010:2011 — Systems and software Quality Requirements and Evaluation (SQuaRE)
 2. McCall, J. A., Richards, P. K., & Walters, G. F. (1977). *Factors in Software Quality*. NTIS.

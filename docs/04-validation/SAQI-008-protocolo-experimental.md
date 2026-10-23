@@ -277,7 +277,51 @@ replication-package/
 
 ---
 
-## 9. Referencias Externas
+## 9. Experimento Comparativo A vs B (Requerido por CONTEXT.md §13)
+
+### Diseño Específico: SAQI Incremental vs SAQI + Mecanismos
+
+| Grupo | Descripción | Mecanismos Activos |
+|-------|-------------|-------------------|
+| **A** | Flujo incremental con AI Pair Programming, tests y commits frecuentes | - Vertical slices (historias pequeñas)<br>- TDD selectivo<br>- Commits atómicos<br>- Tests funcionales por AC<br>- Pair programming humano-agente |
+| **B** | Grupo A **+** mecanismos SAQI relevantes | Grupo A + **Skills versionadas**, **Contexto persistente (4 docs)**, **QA adaptativo (ciclo rápido/profundo)**, **Learn→Skills (flujo 8 pasos)**, **Modo adaptativo**, **Anti-sobreingeniería**, **TDD selectivo por riesgo**, **Estrategia tokens** |
+
+### Variables de Comparación Adicionales
+
+| Variable | Grupo A (Baseline) | Grupo B (SAQI) | Hipótesis |
+|----------|-------------------|----------------|-----------|
+| **Skill Reuse Rate** | N/A (sin Skills) | > 70% | B > A |
+| **Context Staleness** | Alto (sin docs vivos) | < 5% decisiones contradichas | B < A |
+| **Adversarial Detection Rate** | ~0% (sin QA adversarial) | ≥ 25% | B > A |
+| **Defect Prevention via Skills** | 0 | > 80% reglas MUST | B > A |
+| **Token Efficiency** | Baseline | -20% vs baseline | B < A |
+| **Correction Cycles/Story** | Baseline | ≤ 1.5 | B < A |
+| **Time to Skill Fix** | N/A | < 2 iteraciones | B measurable |
+
+### Protocolo Específico
+
+1. **Mismas 10 tareas**, mismo orden, mismo stack, mismo modelo LLM
+2. **Grupo A primero** (establece baseline) → **Grupo B** (aplica SAQI sobre mismo trabajo)
+3. **Washout period**: 1 semana entre grupos para evitar contaminación
+4. **Métricas automatizadas**: 100% via instrumentación (no auto-reportes)
+5. **Análisis ciego**: Evaluador no sabe qué grupo es cuál
+
+### Criterios de Éxito SAQI
+
+| Métrica | Umbral Mínimo para "SAQI Mejora" |
+|---------|----------------------------------|
+| DER | Reducción ≥ 30% vs Grupo A (Cliff's δ ≥ 0.33) |
+| RR | < 2% (Grupo B) vs Grupo A |
+| CT | No aumento > 20% (equivalencia TOST ±20%) |
+| ADR | ≥ 25% (Grupo B) vs ~0% (Grupo A) |
+| TE-11 (Tokens/Story) | Reducción ≥ 15% vs Grupo A |
+| TE-12 (Cycles/Story) | ≤ 1.5 (Grupo B) |
+
+> **Registra resultados reales, incluidos los negativos. No declares que SAQI mejora la calidad o reduce tokens hasta disponer de evidencia suficiente.**
+
+---
+
+## 10. Referencias Externas
 
 1. Wohlin, C., et al. (2012). *Experimentation in Software Engineering*. Springer.
 2. Kitchenham, B., et al. (2002). "Preliminary guidelines for empirical research in software engineering." *IEEE TSE*.

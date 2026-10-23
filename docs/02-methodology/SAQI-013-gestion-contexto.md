@@ -398,7 +398,47 @@ usuario: "checkpoint" / "guarda progreso"
 
 ---
 
-## 8. Referencias Internas
+## 8. Contexto Persistente sin Burocracia (SAQI v2)
+
+### Principio: Única Fuente de Verdad por Clase de Información
+
+| Clase de Información | Fuente Única | NO Duplicar En |
+|---------------------|--------------|----------------|
+| Arquitectura real + restricciones | `ARCHITECTURE.md` | CONTEXT, PROJECT_STATE, QA_RESULTS |
+| Comandos ejecutar/probar | `package.json` scripts + `README.md` | SESSION, docs sueltos |
+| Decisiones importantes (ADRs) | `ARCHITECTURE.md` §5 | CONTEXT, PROJECT_STATE |
+| Estado historias (done/WIP/blocked) | `PROJECT_STATE.md` §2 | SESSION, commits |
+| Defectos conocidos + tendencias | `QA_RESULTS.md` §3-5 | PROJECT_STATE, CONTEXT |
+| Riesgos/limitaciones pendientes | `PROJECT_STATE.md` §5 | QA_RESULTS, CONTEXT |
+| Resultados validación relevantes | `QA_RESULTS.md` §1-2 | ARCHITECTURE, PROJECT_STATE |
+
+### Reglas Anti-Duplicación
+- ❌ NO copiar ADRs a CONTEXT.md
+- ❌ NO replicar lista de módulos en PROJECT_STATE y CONTEXT
+- ❌ NO repetir métricas agregadas en múltiples docs
+- ✅ Referenciar: "Ver `ARCHITECTURE.md` ADR-003 para decisión de auth"
+
+### Actualización por Checkpoints Significativos (NO por operación trivial)
+| Evento | Actualiza |
+|--------|-----------|
+| Cierra historia / Completa vertical slice | `PROJECT_STATE.md` (tareas), `QA_RESULTS.md` (defectos historia) |
+| Nuevo ADR / Decisión arquitectura | `ARCHITECTURE.md` |
+| Nueva regla negocio / Fix recurrente | `CONTEXT.md` §7 + `QA_RESULTS.md` §5 |
+| Release / Hito mayor | Los 4 docs + `CHANGELOG.md` |
+| Defecto P0/P1 corregido | `QA_RESULTS.md` §6 + `CONTEXT.md` §7 (si patrón) |
+
+### Documentación Obligatoria Mínima
+Solo si **facilita ejecución, recuperación de contexto, o mantenimiento**:
+- `ARCHITECTURE.md`: ADRs + diagramas C4 + contratos puertos (sí)
+- `CONTEXT.md`: Stack + reglas negocio + fixes recientes + convenciones (sí)
+- `PROJECT_STATE.md`: Estado actual + próximas tareas + riesgos (sí)
+- `QA_RESULTS.md`: Resumen ejecutivo + defectos por fase/tipo + tendencias (sí)
+- `SESSION.md`: **Opcional** - solo si equipo lo usa activamente
+- Checkpoints automáticos: **Tooling responsibility** (`saqi-context` CLI), no doc manual
+
+---
+
+## 9. Referencias Internas
 
 - SAQI-001: Resumen Ejecutivo (Contexto persistente resumen)
 - SAQI-003: Gobernanza Skills (Skill `A-context-manager` detalle)

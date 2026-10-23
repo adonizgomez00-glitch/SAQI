@@ -301,6 +301,134 @@ spikes). Esta política está basada en la lección aprendida de ITER-001:
 
 ---
 
+## 2.2 Modo Adaptativo de Ejecución (Política de Profundidad)
+
+### Principio
+Seleccionar la profundidad del proceso según **tamaño**, **complejidad** y **riesgo** de la tarea. Tres modos:
+
+| Criterio | Modo Ligero | Modo Estándar | Modo Riguroso |
+|----------|-------------|---------------|---------------|
+| **Alcance** | 1-2 archivos, cambio localizado | 3-10 archivos, múltiples componentes | 10+ archivos, arquitectura/core |
+| **Complejidad** | Baja (fix, script, refactor local) | Media (feature vertical slice) | Alta (auth, security, schema, concurrency) |
+| **Riesgo** | Bajo (no breaking changes) | Medio (posible impacto usuarios) | Crítico (datos, seguridad, compliance) |
+| **Fases obligatorias** | 1, 4, 6(L3), 11 | 1-7, 10, 11 | 1-11 (todas + threat model) |
+| **Skills Nivel A** | Solo relevantes | Todas | Todas + Nivel C obligatorio |
+| **Tests** | Funcionales (AC) + lint | Unit + Int + Func + E2E | TDD obligatorio + property-based + mutation + adversarial completo |
+| **QA** | Ciclo rápido | Ciclo rápido + áreas afectadas | Ciclo profundo completo |
+| **Documentación** | Diff + ACs confirmados | ADRs ligeros + docs vivos | ADRs completos + threat model + runbook rollback |
+
+### Criterios de Elección (Obligatorios)
+1. **Por defecto**: Modo Estándar para toda historia nueva
+2. **Eleva a Riguroso** si CUALQUIERA se cumple:
+   - Autenticación/autorización/crypto/datos sensibles
+   - Cambio de esquema BD con migración de datos
+   - Concurrencia, rate limiting, idempotencia
+   - Pre-release / release candidate
+   - Requisito compliance (GDPR, PCI, SOX, etc.)
+   - Defecto P0/P1 recurrente en misma área
+3. **Permite Ligero** solo si TODO se cumple:
+   - Fix de bug localizado O script/utilidad O refactor sin cambio comportamiento
+   - ≤ 2 archivos modificados
+   - Sin dependencias externas nuevas
+   - Tests funcionales existentes cubren el cambio
+   - No toca: auth, payments, PII, schema, infra
+4. **Prohibido bajar de Riguroso** una vez elevado por seguridad/compliance
+
+### Aplicación Práctica por Historia
+| Tipo Tarea | Modo Recomendado | Justificación |
+|------------|------------------|---------------|
+| Fix typo / lint / doc | Ligero | Cambio trivial, tests existentes cubren |
+| Bug fix aislado (1 archivo) | Ligero | Reproducido, causa conocida, fix mínimo |
+| Nueva feature CRUD simple | Estándar | Vertical slice, tests funcionales + unit |
+| Nueva feature con rules negocio | Estándar | TDD selectivo en reglas críticas |
+| Auth / OAuth / JWT / Permisos | Riguroso | Seguridad, threat model obligatorio |
+| Migración BD / Schema change | Riguroso | Datos en riesgo, rollback plan |
+| Payment / Billing / PII | Riguroso | Compliance, adversarial completo |
+| Refactor arquitectura core | Riguroso | Impacto transversal, regresión completa |
+
+---
+
+## 2.3 ODD + SDD Ligero por Historia
+
+### Plantilla Obligatoria (Máx. 10 líneas en `ITERATION_PLAN.md` o historia)
+```markdown
+## Historia: [Título - Outcome verificable]
+
+**Resultado esperado**: [Qué hace el usuario/sistema al terminar - 1 línea]
+**Criterios de aceptación**: [Lista testable, 3-5 items máx.]
+**Restricciones**: [Seguridad, performance, compatibilidad, budget - solo las relevantes]
+**Archivos/módulos afectados**: [Paths conocidos, "TBD" si exploratorio]
+**Pruebas de verificación**: [Unit/Int/Func/E2E/Adversarial - qué y dónde]
+**Riesgos/Dependencias**: [Técnicos, externos, datos, rollback - solo lo crítico]
+```
+
+### Reglas
+- **No diseñes arquitectura por anticipado**: Solo decisiones estructurales necesarias (límites seguridad, contratos públicos, integridad datos, restricciones tech)
+- **Arquitectura evoluciona con evidencia**: Documenta ADRs cuando afecten futuras tareas (Fase 2)
+- **Especificación general ≠ detalle implementación**: `ARCHITECTURE.md` = decisiones globales; Historia = outcome + ACs + constraints
+
+---
+
+## 2.4 Reglas Anti-Sobreingeniería (Checklist Obligatorio en Fase 4)
+
+Antes de introducir CUALQUIER abstracción, interfaz, fábrica, capa, patrón o dependencia, el agente DEBE justificar:
+
+| Pregunta | Respuesta Requerida |
+|----------|---------------------|
+| **¿Qué problema ACTUAL resuelve?** | Descripción concreta (no "futuro", no "flexibilidad") |
+| **¿Por qué la solución más simple NO basta?** | Evidencia: código duplicado real, bug recurrente, requisito medible |
+| **¿Existe ya en el codebase?** | Buscar antes de crear (helper, util, pattern, tipo) |
+| **¿Añade complejidad sin valor demostrable?** | Si sí → NO implementar |
+
+### Prohibiciones Explícitas
+- ❌ Interfaces/factorías/capas sin necesidad demostrada (YAGNI)
+- ❌ Funcionalidad no solicitada ("por si acaso")
+- ❌ Refactorizar módulos no tocados por la historia
+- ❌ Reemplazar tech stack sin justificación medible (performance, security, maintenance)
+- ❌ Reescribir archivo completo para cambio localizado (editar quirúrgico)
+- ❌ Nueva dependencia si stdlib/existing tools resuelven
+- ❌ Abstracción "para testear" — testear comportamiento real, no mocks
+
+### Prioridad
+**Código claro, mantenible, fácil de verificar** > Sofisticación arquitectónica
+
+---
+
+## 2.5 TDD Selectivo por Riesgo
+
+### Aplica TDD (Test-First) OBLIGATORIO para:
+| Categoría | Ejemplos |
+|-----------|----------|
+| Reglas negocio críticas | Cálculos precios, validaciones dominio, state machines |
+| Transformaciones datos | Parsers, serializers, mappers, import/export |
+| Validaciones entrada/salida | Schema validation, sanitization, boundary checks |
+| Permisos y controles acceso | RBAC, ABAC, ownership, row-level security |
+| Bug fixes reproducibles | Test rojo → fix → test verde (regresión) |
+| Algoritmos con edge cases | Ordenamiento, búsqueda, matching, scoring, dedup |
+
+### Para TODO LO DEMÁS (Permitido Test-After):
+- Implementar pequeña porción → añadir tests apropiados (unit/int/func según riesgo)
+- Tests funcionales (AC) siempre requeridos como mínimo
+
+### Tipos de Test — Usar el MÁS SIMPLE que cubra el riesgo
+| Tipo | Cuándo | Evita |
+|------|--------|-------|
+| Unit | Lógica pura, funciones, utils | Mocks excesivos, testear implementación |
+| Integration | Adaptadores (DB, API, FS), contratos puertos | Levantar stack completo si fake basta |
+| Acceptance (Func) | Use cases, CUJs, reglas negocio E2E | Duplicar coverage de unit/int |
+| E2E | Journeys críticos usuario, cross-browser | Flujos internos, APIs directas |
+| Regression | Bug fixes (ya cubierto arriba) | Tests "por cobertura" sin riesgo identificado |
+| Security | Auth, input validation, crypto | Generic SAST sin contexto |
+| Adversarial | Fase 7 / Modo Riguroso / Riesgo alto | Ejecutar rutinariamente en modo ligero |
+
+### Regla de Oro
+**Una prueba = Un comportamiento/riesgo identificable**. No tests para "aumentar cobertura".
+
+### Prohibido
+Modificar tests para hacerlos pasar ocultando defecto real. ACs independientes de implementación.
+
+---
+
 ## 3. Matriz RACI Resumida
 
 | Fase | Humano (Orquestador/Arquitecto/QA Lead/PO) | Agente (Builder/Tester/Adversarial/Analyst) |

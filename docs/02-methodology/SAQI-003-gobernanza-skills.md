@@ -340,7 +340,74 @@ skills:
 
 ---
 
-## 11. Referencias Externas
+## 11. Aprendizaje de Skills Mejorado (Learn → Skills v2)
+
+### Flujo Obligatorio 8 Pasos (Fase 14 SAQI)
+
+**NO cada error genera regla permanente.** Solo patrones recurrentes o riesgos críticos.
+
+| Paso | Actividad | Responsable | Criterio Salida |
+|------|-----------|-------------|-----------------|
+| **1. Detectar y Reproducir** | Test caso mínimo que falla (rojo) | Agente | Test reproducción commitado |
+| **2. Identificar Causa Raíz** | Delta debugging / bisección / hipótesis validada | Humano + Agente | Causa raíz documentada en `QA_ROOT_CAUSE_ANALYSIS.md` |
+| **3. Clasificar: Aislado vs Patrón** | ¿≥ 3 ocurrencias mismo tipo en 5 iteraciones? ¿Riesgo crítico (P0)? | Humano | **Patrón** → continúa; **Aislado** → fix only, no Skill |
+| **4. Evaluar Mecanismo Prevención** | Prioridad: 1) Lint rule / typecheck 2) Contract test 3) Automated check 4) Skill rule 5) Doc instruction | Humano + Agente | Mecanismo más simple y ejecutable seleccionado |
+| **5. Aplicar Mecanismo** | Implementar: eslint rule, vitest contract, type guard, Skill pattern, template | Agente | Prevención ejecutable passing |
+| **6. Validar No Contradicción** | Verificar contra Skills activas (conflicts_with, reglas MUST) | Humano | 0 conflictos; Skills compatibles |
+| **7. Versionar si Aplica** | Si Skill modificada: SemVer + CHANGELOG + Git tag + trazabilidad DEF-XXX | Humano (Gobernanza) | Skill vX.Y.Z publicada; tests Skill pasan |
+| **8. Registrar Impacto** | Métrica `defect_prevention_rate` actualizada; nota en `ITERATION_REPORT.md` | Agente | Impacto medible en próxima iteración |
+
+### Prioridad de Mecanismos (Ejecutable > Instruccional)
+
+| Orden | Mecanismo | Ejemplo | Por qué Primero |
+|-------|-----------|---------|-----------------|
+| **1** | **Lint / Typecheck Rule** | `eslint-plugin-skill: no-untyped-public-api` | Falla en CI, no se puede ignorar |
+| **2** | **Contract Test** | `tests/skills/skill.contract.test.ts` | Verifica comportamiento real, no sintaxis |
+| **3** | **Automated Check (CI Gate)** | `mutation-score >= 70%` gate | Bloquea merge si falla |
+| **4** | **Skill Pattern/Template** | `templates/repository.ts` con placeholders | Genera código correcto by default |
+| **5** | **Skill Rule (MUST/SHALL)** | "MUST: Validar entrada en puerto" | Requiere revisión humana, puede ignorarse |
+| **6** | **Doc Instruction** | "Recuerda validar entradas" | **Último recurso** - agente puede ignorar |
+
+### Principios de Diseño Skills v2
+
+1. **Modulares**: Una Skill = un dominio cohesivo. No "mega-skills".
+2. **Relevantes**: Cargadas solo si `SKILL_SELECTION.md` las requiere (Fase 3).
+3. **Sin Contradicciones**: `conflicts_with` obligatorio en frontmatter; validado en Fase 3.
+4. **Versionadas por Proyecto**: `SKILL_SELECTION.md` fija versiones exactas por iteración.
+5. **Observables**: Métricas `defect_prevention_rate`, `false_positive_rate` trackeadas por iteración.
+6. **Deprecables Rápido**: Si `false_positive_rate > 20%` → DEPRECATED en 1 iteración.
+
+### Carga Selectiva de Skills (Fase 3 Reforzada)
+
+```markdown
+# SKILL_SELECTION.md - Ejemplo
+
+## Nivel A (Obligatorias - SIEMPRE)
+- A-coding-standards@v2.1.0
+- A-project-architecture@v1.3.0
+- A-secure-coding@v2.0.1
+- A-context-manager@v1.1.0
+- A-testing@v1.4.0
+- D-git-workflow@v1.0.0
+
+## Nivel B (Por Stack/Dominio - SOLO si aplica)
+- B-authentication-security@v1.2.0  # SOLO si auth en historia
+- C-dexie-patterns@v1.3.0          # SOLO si Dexie/IndexedDB
+- B-ui-components@v1.1.0           # SOLO si React UI
+
+## Nivel C (Por Fase - SOLO en verificación)
+- C-qa-breaker@v1.0.0              # SOLO Fase 7
+- C-debugging@v1.1.0               # SOLO Fase 8-9
+
+## Nivel D (Opcional)
+- D-prompt-engineering@v1.0.0      # Si mejora prompting
+```
+
+**Regla**: Cargar MÁS Skills ≠ mejor. Cargar Skills IRRELEVANTES = ruido, tokens, falsos positivos.
+
+---
+
+## 12. Referencias Externas
 
 1. Semantic Versioning 2.0.0 - semver.org
 2. IEEE 828-2012 - Configuration Management

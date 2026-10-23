@@ -183,6 +183,59 @@ SALIDA:
 
 ---
 
+## 4.5 Reestructuración QA: Dos Ciclos por Historia vs Hito
+
+### Ciclo Rápido (Por Historia / Modo Ligero + Estándar)
+**Ejecuta por defecto en cada historia completada**
+
+| Actividad | Descripción |
+|-----------|-------------|
+| Verificación funcional | ACs pasan (tests funcionales L3) |
+| Pruebas pertinentes | Unit (L1) + Integration (L2) solo áreas tocadas |
+| Comprobaciones estáticas | Typecheck + Lint (0 errores) |
+| Revisión del diff | Humano revisa cambios críticos |
+| Confirmación ACs | Checklist ACs verificados por tests |
+
+**Tiempo objetivo**: < 30 min automatizado + 15 min revisión humana
+**Gate**: Merge a main solo si ciclo rápido pasa
+
+---
+
+### Ciclo Profundo (Por Riesgo / Hito / Modo Riguroso)
+**Ejecuta SOLO cuando se activa por triggers explícitos**
+
+| Actividad | Descripción |
+|-----------|-------------|
+| QA Adversarial completo | 8 categorías ATK-* (Fase 7 completa) |
+| Seguridad | SAST/DAST/SCA + threat model review |
+| Concurrencia y estrés | ATK-STRESS + ATK-CONC + ATK-CHAOS |
+| Accesibilidad | axe-core + manual keyboard/screen reader |
+| Regresión ampliada | Suite completa L1-L5 (no solo áreas afectadas) |
+| Validación migraciones | Schema + datos + rollback test |
+| Despliegue/Recuperación/Rollback | Smoke tests staging + disaster drill |
+
+**Triggers Obligatorios (cualquiera activa ciclo profundo):**
+1. **Riesgo elevado**: Modo Riguroso seleccionado (auth, payments, PII, schema, concurrency)
+2. **Cambios sensibles**: Migración BD, cambio auth, nueva integración externa
+3. **Defectos recurrentes**: ≥ 3 P0/P1 en mismo módulo/área en últimas 5 iteraciones
+4. **Cambios arquitectónicos**: Refactor core, nueva capa, cambio tech stack
+5. **Pre-release / Release Candidate**: Antes de Fase 11 Verify
+6. **Compliance obligatorio**: GDPR, PCI, SOX, HIPAA, etc.
+
+**Tiempo objetivo**: 2-4 horas (automatizado) + 1-2 horas (revisión humana)
+**Gate**: Release candidate solo si ciclo profundo pasa
+
+---
+
+### Regla de Integración
+- **Modo Ligero**: Solo Ciclo Rápido
+- **Modo Estándar**: Ciclo Rápido por historia + Ciclo Profundo en hito/release
+- **Modo Riguroso**: Ciclo Rápido por historia + Ciclo Profundo obligatorio antes de merge
+
+> **No afirmes que una aplicación es segura únicamente porque pasan las pruebas disponibles.** El ciclo profundo busca lo que los tests no cubren.
+
+---
+
 ## 5. Clasificación de Defectos (Taxonomía SAQI)
 
 ### 5.1 Severidad
